@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# Jupyter
+*.ipynb
+
+# Data & training artifacts
+data/
+datasets/
+runs/
+logs/
+
+# Model files
+export_model*/
+export_cw/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.pkl
+*.joblib
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# big datasets
+diseases.csv
+filtered_diseases.csv
+*.csv
+data/
+datasets/
