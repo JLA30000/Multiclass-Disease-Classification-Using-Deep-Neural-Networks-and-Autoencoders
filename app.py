@@ -18,13 +18,13 @@ from fastapi.middleware.cors import CORSMiddleware
 # Bundle paths
 # ============================================================
 AE_BUNDLE_PATHS = {
-    "ae_t100": r"export_model\ae_classifier.bundle.pt",
-    "ae_t200": r"export_model_200\ae_classifier_200.bundle.pt",
-    "ae_t300": r"export_model_300\ae_classifier_300.bundle.pt",
+    "ae_t100": r"export_model/ae_classifier.bundle.pt",
+    "ae_t200": r"export_model_200/ae_classifier_200.bundle.pt",
+    "ae_t300": r"export_model_300/ae_classifier_300.bundle.pt",
 }
 
 CW_BUNDLE_PATHS = {
-    "cw_full": r"export_cw\cw_classifier.bundle.pt",
+    "cw_full": r"export_cw/cw_classifier.bundle.pt",
 }
 
 ModelKey = Literal["ae_t100", "ae_t200", "ae_t300", "cw_full"]

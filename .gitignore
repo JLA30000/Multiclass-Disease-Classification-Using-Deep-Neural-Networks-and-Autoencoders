@@ -22,8 +22,6 @@ runs/
 logs/
 
 # Model files
-export_model*/
-export_cw/
 *.pth
 *.ckpt
 *.onnx
