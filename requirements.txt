@@ -2,6 +2,5 @@ fastapi
 uvicorn[standard]
 numpy
 torch
-xgboost
 pydantic
 python-multipart

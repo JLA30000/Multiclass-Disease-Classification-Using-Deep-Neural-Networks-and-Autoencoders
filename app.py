@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 from typing import Any, Dict, List, Optional, Literal, Set
 
@@ -13,8 +14,6 @@ from neural_network_autoencoder import Autoencoder
 from neural_network import NeuralNetwork
 from logistic_regression_weighted import LogisticRegressionSoftmax
 from fastapi.middleware.cors import CORSMiddleware
-
-import xgboost as xgb
 
 
 # ============================================================
@@ -30,10 +29,6 @@ CW_BUNDLE_PATHS = {
     "cw_full": r"export_cw/cw_classifier.bundle.pt",
 }
 
-XGB_BUNDLE_PATHS = {
-    "xgb_full": r"export_xgb/xgb_classifier.bundle.pt",
-}
-
 LR_BUNDLE_PATHS = {
     "lr_full": r"export_lr/lr_classifier.bundle.pt",
 }
@@ -45,7 +40,6 @@ AE_CLF_FULL_BUNDLE_PATHS = {
 ModelKey = Literal[
     "ae_t100", "ae_t200", "ae_t300",
     "cw_full",
-    "xgb_full",
     "lr_full",
     "ae_clf_full",
 ]
@@ -111,6 +105,17 @@ class SymptomsResponse(BaseModel):
 def require_exists(path: str):
     if not os.path.exists(path):
         raise FileNotFoundError(f"Bundle not found: {path}")
+
+
+def sidecar_json_path(bundle_path: str) -> str:
+    return f"{os.path.splitext(bundle_path)[0]}.json"
+
+
+def parse_bool_env(name: str, default: bool) -> bool:
+    raw_value = os.getenv(name)
+    if raw_value is None:
+        return default
+    return raw_value.strip().lower() in {"1", "true", "yes", "on"}
 
 
 def softmax_topk(probs: torch.Tensor, label_names: List[str]) -> Dict[str, Any]:
@@ -296,36 +301,6 @@ class CWBundle(BaseBundle):
         return softmax_topk(probs, self.label_names)
 
 
-class XGBBundle(BaseBundle):
-    model_type = "xgb"
-
-    def __init__(self, model_key: str, bundle_path: str, device: torch.device):
-        super().__init__(model_key, bundle_path, device)
-
-        try:
-            booster_raw = self._bundle["xgb_booster_raw"]
-        except KeyError as e:
-            raise KeyError(f"[{model_key}] XGB bundle missing key {e}.") from e
-        self._release_bundle()
-
-        self.bst = xgb.Booster()
-        self.bst.load_model(
-            booster_raw if isinstance(booster_raw, bytearray) else bytearray(booster_raw)
-        )
-
-    def predict(self, x_np: np.ndarray, temperature: float = 1.0) -> Dict[str, Any]:
-        dm = xgb.DMatrix(x_np.reshape(1, -1))
-        probs_np = self.bst.predict(dm)[0]  # [C] softprob output
-        if temperature != 1.0:
-            # apply temperature in log-space
-            log_probs = np.log(np.clip(probs_np, 1e-30, None)) / float(temperature)
-            log_probs -= log_probs.max()
-            probs_np = np.exp(log_probs)
-            probs_np /= probs_np.sum()
-        probs = torch.from_numpy(probs_np).float()
-        return softmax_topk(probs, self.label_names)
-
-
 class LRBundle(BaseBundle):
     model_type = "lr"
 
@@ -431,11 +406,12 @@ app = FastAPI(title="Disease Prediction API", version="3.0")
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-AE_MODELS: Dict[str, AEBundle] = {}
-CW_MODELS: Dict[str, CWBundle] = {}
-XGB_MODELS: Dict[str, XGBBundle] = {}
-LR_MODELS: Dict[str, LRBundle] = {}
-AE_CLF_FULL_MODELS: Dict[str, AEClfFullBundle] = {}
+MODEL_GROUP_NAMES = ("ae", "cw", "lr", "ae_clf_full")
+PRELOAD_MODELS = parse_bool_env("PRELOAD_MODELS", default=False)
+
+MODEL_SPECS: Dict[str, Dict[str, Any]] = {}
+MODEL_METADATA: Dict[str, Dict[str, Any]] = {}
+LOADED_MODELS: Dict[str, BaseBundle] = {}
 
 app.add_middleware(
     CORSMiddleware,
@@ -446,18 +422,98 @@ app.add_middleware(
 )
 
 
+def load_bundle_metadata(model_key: str, model_type: str, bundle_path: str) -> Dict[str, Any]:
+    json_path = sidecar_json_path(bundle_path)
+    require_exists(json_path)
+
+    with open(json_path, "r", encoding="utf-8") as fh:
+        meta = json.load(fh)
+
+    cfg = meta.get("config")
+    if not isinstance(cfg, dict):
+        raise KeyError(f"[{model_key}] metadata missing config.")
+
+    feature_cols = cfg.get("feature_cols")
+    if not isinstance(feature_cols, list):
+        raise KeyError(f"[{model_key}] metadata missing feature_cols.")
+
+    num_classes = cfg.get("num_classes", meta.get("label_names_count"))
+    if num_classes is None:
+        raise KeyError(f"[{model_key}] metadata missing num_classes.")
+
+    return {
+        "model_key": model_key,
+        "model_type": model_type,
+        "bundle_path": bundle_path,
+        "feature_cols": feature_cols,
+        "num_classes": int(num_classes),
+    }
+
+
+def register_model_spec(
+    model_type: str,
+    bundle_paths: Dict[str, str],
+    bundle_cls: Any,
+) -> None:
+    for model_key, bundle_path in bundle_paths.items():
+        require_exists(bundle_path)
+        MODEL_SPECS[model_key] = {
+            "model_type": model_type,
+            "bundle_path": bundle_path,
+            "bundle_cls": bundle_cls,
+        }
+        MODEL_METADATA[model_key] = load_bundle_metadata(
+            model_key=model_key,
+            model_type=model_type,
+            bundle_path=bundle_path,
+        )
+
+
+def initialize_model_registry() -> None:
+    if MODEL_SPECS and MODEL_METADATA:
+        return
+
+    register_model_spec("ae", AE_BUNDLE_PATHS, AEBundle)
+    register_model_spec("cw", CW_BUNDLE_PATHS, CWBundle)
+    register_model_spec("lr", LR_BUNDLE_PATHS, LRBundle)
+    register_model_spec("ae_clf_full", AE_CLF_FULL_BUNDLE_PATHS, AEClfFullBundle)
+
+    if PRELOAD_MODELS:
+        for model_key in MODEL_SPECS:
+            get_model(model_key)
+
+
+def grouped_loaded_models() -> Dict[str, List[str]]:
+    grouped = {group: [] for group in MODEL_GROUP_NAMES}
+    for model_key in LOADED_MODELS:
+        model_type = MODEL_METADATA[model_key]["model_type"]
+        grouped[model_type].append(model_key)
+    return grouped
+
+
+def get_model(model_key: str) -> BaseBundle:
+    initialize_model_registry()
+
+    if model_key in LOADED_MODELS:
+        return LOADED_MODELS[model_key]
+
+    spec = MODEL_SPECS.get(model_key)
+    if spec is None:
+        raise KeyError(f"Unknown model key: {model_key}")
+
+    model = spec["bundle_cls"](
+        model_key=model_key,
+        bundle_path=spec["bundle_path"],
+        device=DEVICE,
+    )
+
+    LOADED_MODELS[model_key] = model
+    return model
+
+
 @app.on_event("startup")
 def startup_load_models():
-    for k, path in AE_BUNDLE_PATHS.items():
-        AE_MODELS[k] = AEBundle(model_key=k, bundle_path=path, device=DEVICE)
-    for k, path in CW_BUNDLE_PATHS.items():
-        CW_MODELS[k] = CWBundle(model_key=k, bundle_path=path, device=DEVICE)
-    for k, path in XGB_BUNDLE_PATHS.items():
-        XGB_MODELS[k] = XGBBundle(model_key=k, bundle_path=path, device=DEVICE)
-    for k, path in LR_BUNDLE_PATHS.items():
-        LR_MODELS[k] = LRBundle(model_key=k, bundle_path=path, device=DEVICE)
-    for k, path in AE_CLF_FULL_BUNDLE_PATHS.items():
-        AE_CLF_FULL_MODELS[k] = AEClfFullBundle(model_key=k, bundle_path=path, device=DEVICE)
+    initialize_model_registry()
 
 
 # ============================================================
@@ -465,16 +521,11 @@ def startup_load_models():
 # ============================================================
 @app.get("/health", response_model=HealthResponse)
 def health():
+    initialize_model_registry()
     return {
         "status": "ok",
         "device": str(DEVICE),
-        "models_loaded": {
-            "ae": list(AE_MODELS.keys()),
-            "cw": list(CW_MODELS.keys()),
-            "xgb": list(XGB_MODELS.keys()),
-            "lr": list(LR_MODELS.keys()),
-            "ae_clf_full": list(AE_CLF_FULL_MODELS.keys()),
-        },
+        "models_loaded": grouped_loaded_models(),
     }
 
 
@@ -483,13 +534,13 @@ def schema():
     """
     Returns feature columns per model (these are your symptom labels).
     """
-    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
-    if not all_models:
+    initialize_model_registry()
+    if not MODEL_METADATA:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     per_model: Dict[str, List[str]] = {}
-    for k, m in all_models.items():
-        per_model[k] = m.feature_cols
+    for model_key, meta in MODEL_METADATA.items():
+        per_model[model_key] = meta["feature_cols"]
 
     return {"per_model_feature_cols": per_model}
 
@@ -503,16 +554,17 @@ def symptoms():
     If the four models use the same feature_cols (likely), `symptoms` will be that list.
     If they differ, `symptoms` is the union, and `per_model_symptoms` tells you each model's list.
     """
-    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
-    if not all_models:
+    initialize_model_registry()
+    if not MODEL_METADATA:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     per_model: Dict[str, List[str]] = {}
     all_syms: Set[str] = set()
 
-    for k, m in all_models.items():
-        per_model[k] = m.feature_cols
-        all_syms.update(m.feature_cols)
+    for model_key, meta in MODEL_METADATA.items():
+        feature_cols = meta["feature_cols"]
+        per_model[model_key] = feature_cols
+        all_syms.update(feature_cols)
 
     return {
         "symptoms": sorted(all_syms),
@@ -530,13 +582,14 @@ def predict_symptoms(req: PredictSymptomsRequest):
     """
     User inputs a checklist of symptoms; backend converts to binary vector and runs all models.
     """
-    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
-    if not all_models:
+    initialize_model_registry()
+    if not MODEL_SPECS:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     preds: List[ModelPrediction] = []
 
-    for model_key, model in all_models.items():
+    for model_key in MODEL_SPECS:
+        model = get_model(model_key)
         x_np = model.build_binary_feature_vector(
             req.symptoms, strict=req.strict)
         out = model.predict(x_np, temperature=req.temperature)
