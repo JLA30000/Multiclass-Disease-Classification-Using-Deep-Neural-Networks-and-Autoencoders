@@ -1,22 +1,11 @@
+from __future__ import annotations
+
 # logistic_regression_weighted.py
-import argparse
-import copy
 import random
-import time
 import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-import matplotlib.pyplot as plt
-
-from sklearn.metrics import (
-    precision_score, recall_score, f1_score, confusion_matrix, top_k_accuracy_score,
-    precision_recall_fscore_support
-)
-
-from dataset import diagnosticsDataset
 
 
 # ----------------- helpers -----------------
@@ -39,6 +28,14 @@ def run_eval(model: nn.Module, loader: DataLoader, criterion, device: torch.devi
     Return:
       avg_loss, acc, macroP, macroR, macroF1, top3, top5, cm, all_true, all_preds
     """
+    from sklearn.metrics import (
+        confusion_matrix,
+        f1_score,
+        precision_score,
+        recall_score,
+        top_k_accuracy_score,
+    )
+
     model.eval()
     total_loss = 0.0
     total = 0
@@ -124,6 +121,8 @@ def normalize_cm(cm: np.ndarray, mode: str):
 
 
 def plot_block_heatmap(block_cm: np.ndarray, group_size: int, n_classes: int, normalize: str, out_prefix: str):
+    import matplotlib.pyplot as plt
+
     show = normalize_cm(block_cm, normalize)
 
     fig, ax = plt.subplots(figsize=(8.5, 7.5))
@@ -195,6 +194,10 @@ def train_one_seed(
     weights_tensor: torch.Tensor,
     device: torch.device
 ):
+    import copy
+    import torch.optim as optim
+    from torch.utils.data import DataLoader
+
     set_seed(seed)
 
     g = torch.Generator().manual_seed(seed)
@@ -281,6 +284,13 @@ def train_one_seed(
 
 
 def main():
+    import argparse
+    import time
+
+    from sklearn.metrics import precision_recall_fscore_support
+
+    from dataset import diagnosticsDataset
+
     parser = argparse.ArgumentParser(
         "Class-weighted Logistic Regression (softmax) - multi-seed + aggregated confusion"
     )
