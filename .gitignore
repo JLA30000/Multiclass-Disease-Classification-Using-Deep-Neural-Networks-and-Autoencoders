@@ -27,6 +27,7 @@ logs/
 *.onnx
 *.pkl
 *.joblib
+*.pt
 
 # OS files
 .DS_Store
