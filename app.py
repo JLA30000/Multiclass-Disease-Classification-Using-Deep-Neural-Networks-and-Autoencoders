@@ -153,21 +153,26 @@ class BaseBundle:
 
         # PyTorch 2.6+ defaults weights_only=True; your bundle has metadata (numpy, lists, etc.)
         # You created these bundles -> trusted -> load with weights_only=False.
-        self.bundle = torch.load(
+        bundle = torch.load(
             bundle_path, map_location=device, weights_only=False)
 
         try:
             # symptom names
-            self.feature_cols: List[str] = self.bundle["feature_cols"]
+            self.feature_cols: List[str] = bundle["feature_cols"]
             # disease names
-            self.label_names: List[str] = self.bundle["label_names"]
-            self.cfg: Dict[str, Any] = self.bundle["config"]
+            self.label_names: List[str] = bundle["label_names"]
+            self.cfg: Dict[str, Any] = bundle["config"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] bundle missing key {e}.") from e
 
+        self._bundle: Optional[Dict[str, Any]] = bundle
         self.num_classes = int(self.cfg.get(
             "num_classes", len(self.label_names)))
         self.feature_set: Set[str] = set(self.feature_cols)
+
+    def _release_bundle(self) -> None:
+        # Drop the serialized payload once the runtime model is initialized.
+        self._bundle = None
 
     def build_binary_feature_vector(self, symptoms_checked: List[str], strict: bool) -> np.ndarray:
         """
@@ -202,10 +207,11 @@ class AEBundle(BaseBundle):
         super().__init__(model_key, bundle_path, device)
 
         try:
-            ae_sd = self.bundle["autoencoder_state_dict"]
-            clf_sd = self.bundle["classifier_state_dict"]
+            ae_sd = self._bundle["autoencoder_state_dict"]
+            clf_sd = self._bundle["classifier_state_dict"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] AE bundle missing key {e}.") from e
+        self._release_bundle()
 
         raw_input_dim = int(self.cfg["raw_input_dim"])
         z_dim = int(self.cfg["z_dim"])
@@ -253,9 +259,10 @@ class CWBundle(BaseBundle):
         super().__init__(model_key, bundle_path, device)
 
         try:
-            clf_sd = self.bundle["classifier_state_dict"]
+            clf_sd = self._bundle["classifier_state_dict"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] CW bundle missing key {e}.") from e
+        self._release_bundle()
 
         input_dim = int(self.cfg["input_dim"])
         hidden_dims = list(self.cfg["hidden_dims"])
@@ -296,12 +303,15 @@ class XGBBundle(BaseBundle):
         super().__init__(model_key, bundle_path, device)
 
         try:
-            booster_raw = self.bundle["xgb_booster_raw"]
+            booster_raw = self._bundle["xgb_booster_raw"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] XGB bundle missing key {e}.") from e
+        self._release_bundle()
 
         self.bst = xgb.Booster()
-        self.bst.load_model(bytearray(booster_raw))
+        self.bst.load_model(
+            booster_raw if isinstance(booster_raw, bytearray) else bytearray(booster_raw)
+        )
 
     def predict(self, x_np: np.ndarray, temperature: float = 1.0) -> Dict[str, Any]:
         dm = xgb.DMatrix(x_np.reshape(1, -1))
@@ -323,9 +333,10 @@ class LRBundle(BaseBundle):
         super().__init__(model_key, bundle_path, device)
 
         try:
-            clf_sd = self.bundle["classifier_state_dict"]
+            clf_sd = self._bundle["classifier_state_dict"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] LR bundle missing key {e}.") from e
+        self._release_bundle()
 
         input_dim = int(self.cfg["input_dim"])
         num_classes = int(self.cfg["num_classes"])
@@ -361,10 +372,11 @@ class AEClfFullBundle(BaseBundle):
         super().__init__(model_key, bundle_path, device)
 
         try:
-            enc_sd = self.bundle["encoder_state_dict"]
-            clf_sd = self.bundle["classifier_state_dict"]
+            enc_sd = self._bundle["encoder_state_dict"]
+            clf_sd = self._bundle["classifier_state_dict"]
         except KeyError as e:
             raise KeyError(f"[{model_key}] AE-CLF-Full bundle missing key {e}.") from e
+        self._release_bundle()
 
         raw_input_dim = int(self.cfg["raw_input_dim"])
         latent_dim = int(self.cfg["latent_dim"])
