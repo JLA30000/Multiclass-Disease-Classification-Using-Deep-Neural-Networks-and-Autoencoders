@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 420, in <module>
+    main()
+    ~~~~^^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 247, in main
+    test_ds = diagnosticsDataset(
+        args.data_path, split="test",  indices_file=args.indices_file)
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\dataset.py", line 12, in __init__
+    full_df = pd.read_csv(file_path)
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py", line 626, in _read
+    return parser.read(nrows)
+           ~~~~~~~~~~~^^^^^^^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\readers.py", line 1923, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        nrows
+        ^^^^^
+    )
+    ^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 234, in read
+    chunks = self._reader.read_low_memory(nrows)
+  File "pandas/_libs/parsers.pyx", line 838, in pandas._libs.parsers.TextReader.read_low_memory
+  File "pandas/_libs/parsers.pyx", line 905, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 874, in pandas._libs.parsers.TextReader._tokenize_rows
+  File "pandas/_libs/parsers.pyx", line 891, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2053, in pandas._libs.parsers.raise_parser_error
+  File "<frozen codecs>", line 334, in getstate
+KeyboardInterrupt
+^C

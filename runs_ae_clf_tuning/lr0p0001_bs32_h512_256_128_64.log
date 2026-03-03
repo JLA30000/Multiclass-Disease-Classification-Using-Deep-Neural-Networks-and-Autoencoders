@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8338 | TEST acc=0.8429 | macroP/R/F1=0.8159/0.8749/0.8271 | top3=0.9512 | top5=0.9751
+
+GRID_METRIC val_macro_f1 0.833840
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.845240
+GRID_METRIC val_top3 0.950793
+GRID_METRIC val_top5 0.975092
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4204 ± 0.0000
+Test Acc        : 0.8429 ± 0.0000
+Macro Precision : 0.8159 ± 0.0000
+Macro Recall    : 0.8749 ± 0.0000
+Macro F1        : 0.8271 ± 0.0000
+Top-3 Acc       : 0.9512 ± 0.0000
+Top-5 Acc       : 0.9751 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20779 (84.2893%)
+Errors (off-diagonal) count: 3873 (15.7107%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=50)
+ 2. schizophrenia  →  psychotic disorder   (count=29)
+ 3. vaginal cyst  →  spontaneous abortion   (count=24)
+ 4. seborrheic keratosis  →  skin pigmentation disorder   (count=21)
+ 5. acute bronchitis  →  chronic obstructive pulmonary disease (copd)   (count=21)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the foot | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+conjunctivitis due to bacteria | 15 | 0.9333 | 0.8235 | 0.9333 | 0.8750
+acute pancreatitis | 121 | 0.9256 | 0.8296 | 0.9256 | 0.8750
+esophageal cancer | 7 | 1.0000 | 0.7778 | 1.0000 | 0.8750
+thoracic aortic aneurysm | 17 | 0.8235 | 0.9333 | 0.8235 | 0.8750
+volvulus | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+ascending cholangitis | 7 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+aspergillosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+neonatal jaundice | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_bs32_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_bs32_h512_256_128_64.jpg
+Total runtime: 1369.4s

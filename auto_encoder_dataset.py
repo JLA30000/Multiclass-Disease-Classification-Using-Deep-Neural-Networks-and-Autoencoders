@@ -5,12 +5,20 @@ from torch.utils.data import Dataset
 
 
 class AutoencoderDataset(Dataset):
-    def __init__(self, csv_path, split="train", indices_file="split_indices.npz", transform=None,
-                 label_column="diseases"):
+    def __init__(
+        self,
+        csv_path,
+        split="train",
+        indices_file="split_indices.npz",
+        transform=None,
+        label_column="diseases",
+        verbose=True,
+    ):
         self.transform = transform
 
         df = pd.read_csv(csv_path)
-        print(f"Loaded {len(df)} total samples from {csv_path}")
+        if verbose:
+            print(f"Loaded {len(df)} total samples from {csv_path}")
 
         # Extract features
         if label_column in df.columns:
@@ -38,8 +46,9 @@ class AutoencoderDataset(Dataset):
         # Apply split
         self.X = self.X[np.asarray(split_indices, dtype=np.int64)]
 
-        print(f"Autoencoder {split} dataset: {len(self.X)} samples")
-        print(f"Feature dimension: {self.X.shape[1]}")
+        if verbose:
+            print(f"Autoencoder {split} dataset: {len(self.X)} samples")
+            print(f"Feature dimension: {self.X.shape[1]}")
 
     def __len__(self):
         return self.X.shape[0]

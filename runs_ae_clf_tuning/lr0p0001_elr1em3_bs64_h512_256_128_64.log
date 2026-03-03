@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.001  |  Classifier head LR: 0.0001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8362 | TEST acc=0.8454 | macroP/R/F1=0.8224/0.8785/0.8336 | top3=0.9501 | top5=0.9719
+
+GRID_METRIC val_macro_f1 0.836213
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.846862
+GRID_METRIC val_top3 0.948968
+GRID_METRIC val_top5 0.971482
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4216 ± 0.0000
+Test Acc        : 0.8454 ± 0.0000
+Macro Precision : 0.8224 ± 0.0000
+Macro Recall    : 0.8785 ± 0.0000
+Macro F1        : 0.8336 ± 0.0000
+Top-3 Acc       : 0.9501 ± 0.0000
+Top-5 Acc       : 0.9719 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20842 (84.5449%)
+Errors (off-diagonal) count: 3810 (15.4551%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=34)
+ 2. kidney stone  →  pyelonephritis   (count=28)
+ 3. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=25)
+ 4. depression  →  post-traumatic stress disorder (ptsd)   (count=25)
+ 5. skin polyp  →  skin disorder   (count=24)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+diabetes insipidus | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+vulvar disorder | 16 | 0.9375 | 0.8333 | 0.9375 | 0.8824
+pancreatic cancer | 20 | 0.9500 | 0.8261 | 0.9500 | 0.8837
+peritonsillar abscess | 24 | 0.7917 | 1.0000 | 0.7917 | 0.8837
+urethritis | 46 | 0.8261 | 0.9500 | 0.8261 | 0.8837
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amyotrophic lateral sclerosis (als) | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs64_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs64_h512_256_128_64.jpg
+Total runtime: 911.0s

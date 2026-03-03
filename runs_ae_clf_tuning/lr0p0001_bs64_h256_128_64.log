@@ -1,0 +1,57 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] VAL macroF1=0.8289 | TEST acc=0.8461 | macroP/R/F1=0.8094/0.8763/0.8243 | top3=0.9538 | top5=0.9762
+
+GRID_METRIC val_macro_f1 0.828903
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.845726
+GRID_METRIC val_top3 0.953268
+GRID_METRIC val_top5 0.976106
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4061 ± 0.0000
+Test Acc        : 0.8461 ± 0.0000
+Macro Precision : 0.8094 ± 0.0000
+Macro Recall    : 0.8763 ± 0.0000
+Macro F1        : 0.8243 ± 0.0000
+Top-3 Acc       : 0.9538 ± 0.0000
+Top-5 Acc       : 0.9762 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20857 (84.6057%)
+Errors (off-diagonal) count: 3795 (15.3943%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=38)
+ 2. schizophrenia  →  psychotic disorder   (count=33)
+ 3. personality disorder  →  marijuana abuse   (count=29)
+ 4. seborrheic keratosis  →  skin pigmentation disorder   (count=21)
+ 5. pneumonia  →  acute bronchospasm   (count=21)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+open wound of the foot | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+cystic fibrosis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+aphthous ulcer | 24 | 0.8750 | 0.8750 | 0.8750 | 0.8750
+appendicitis | 91 | 0.8901 | 0.8617 | 0.8901 | 0.8757
+flu | 68 | 0.8824 | 0.8696 | 0.8824 | 0.8759
+seborrheic dermatitis | 88 | 0.8864 | 0.8667 | 0.8864 | 0.8764
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+anemia due to malignancy | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+kidney disease due to longstanding hypertension | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+lice | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_bs64_h256_128_64.jpg
+Total runtime: 910.3s

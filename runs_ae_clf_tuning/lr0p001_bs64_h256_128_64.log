@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8073 | TEST acc=0.8238 | macroP/R/F1=0.7877/0.8539/0.7993 | top3=0.9432 | top5=0.9709
+
+GRID_METRIC val_macro_f1 0.807319
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.822806
+GRID_METRIC val_top3 0.944870
+GRID_METRIC val_top5 0.971644
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.5088 ± 0.0000
+Test Acc        : 0.8238 ± 0.0000
+Macro Precision : 0.7877 ± 0.0000
+Macro Recall    : 0.8539 ± 0.0000
+Macro F1        : 0.7993 ± 0.0000
+Top-3 Acc       : 0.9432 ± 0.0000
+Top-5 Acc       : 0.9709 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20309 (82.3828%)
+Errors (off-diagonal) count: 4343 (17.6172%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=33)
+ 2. corneal disorder  →  dry eye of unknown cause   (count=26)
+ 3. skin polyp  →  skin disorder   (count=25)
+ 4. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=24)
+ 5. pyelonephritis  →  kidney stone   (count=22)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+oral mucosal lesion | 61 | 0.7705 | 0.9400 | 0.7705 | 0.8468
+urethritis | 46 | 0.8478 | 0.8478 | 0.8478 | 0.8478
+diabetic ketoacidosis | 68 | 0.7794 | 0.9298 | 0.7794 | 0.8480
+prostatitis | 68 | 0.8235 | 0.8750 | 0.8235 | 0.8485
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+thyroid disease | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+trichiasis | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+testicular disorder | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p001_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p001_bs64_h256_128_64.jpg
+Total runtime: 518.9s

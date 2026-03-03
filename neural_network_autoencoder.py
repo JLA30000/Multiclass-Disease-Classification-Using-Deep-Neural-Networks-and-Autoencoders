@@ -1,29 +1,58 @@
+# neural_network_autoencoder.py
+import torch
 import torch.nn as nn
 
 
 class Autoencoder(nn.Module):
-    def __init__(self, input_dim):
+    def __init__(
+        self,
+        input_dim: int,
+        latent_dim: int = 64,
+        hidden_dims=(256, 128),
+        dropout: float = 0.0,
+    ):
         super().__init__()
 
-        # Encoder
-        self.encoder = nn.Sequential(
-            nn.Linear(input_dim, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64)   # linear bottleneck
-        )
+        h1, h2 = hidden_dims
 
-        # Decoder
-        self.decoder = nn.Sequential(
-            nn.Linear(64, 128),
+        enc_layers = [
+            nn.Linear(input_dim, h1),
             nn.ReLU(),
-            nn.Linear(128, 256),
+        ]
+        if dropout > 0:
+            enc_layers.append(nn.Dropout(dropout))
+        enc_layers += [
+            nn.Linear(h1, h2),
             nn.ReLU(),
-            nn.Linear(256, input_dim),
-            nn.Sigmoid()         # binary reconstruction
-        )
+        ]
+        if dropout > 0:
+            enc_layers.append(nn.Dropout(dropout))
 
-    def forward(self, x):
+        enc_layers += [nn.Linear(h2, latent_dim)]
+        self.encoder = nn.Sequential(*enc_layers)
+
+        dec_layers = [
+            nn.Linear(latent_dim, h2),
+            nn.ReLU(),
+        ]
+        if dropout > 0:
+            dec_layers.append(nn.Dropout(dropout))
+        dec_layers += [
+            nn.Linear(h2, h1),
+            nn.ReLU(),
+        ]
+        if dropout > 0:
+            dec_layers.append(nn.Dropout(dropout))
+
+        # IMPORTANT: sigmoid because you're using BCELoss on binary targets
+        dec_layers += [nn.Linear(h1, input_dim), nn.Sigmoid()]
+        self.decoder = nn.Sequential(*dec_layers)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         z = self.encoder(x)
-        return self.decoder(z)
+        out = self.decoder(z)
+        return out
+
+    @torch.no_grad()
+    def encode(self, x: torch.Tensor) -> torch.Tensor:
+        return self.encoder(x)

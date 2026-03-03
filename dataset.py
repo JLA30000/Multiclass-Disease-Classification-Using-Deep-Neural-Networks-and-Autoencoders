@@ -15,12 +15,16 @@ class diagnosticsDataset(Dataset):
             raise ValueError(
                 f"Label column '{label_column}' not found. Columns: {list(full_df.columns)}")
 
-        # Fit label encoder ONCE (global) so mapping is consistent across splits
-        all_labels = full_df[label_column].astype(str).str.strip().values
-        self.label_encoder = LabelEncoder()
-        self.label_encoder.fit(all_labels)
-
         indices = np.load(indices_file)
+
+        # Fit label encoder on the UNION of all split indices (not the full CSV),
+        # so removed classes (e.g. < MIN_COUNT) don't pollute the label space.
+        all_split_idx = np.concatenate(
+            [indices[k] for k in indices.files])
+        all_split_labels = full_df[label_column].astype(
+            str).str.strip().iloc[all_split_idx].values
+        self.label_encoder = LabelEncoder()
+        self.label_encoder.fit(all_split_labels)
 
         if split == "train":
             split_indices = indices["train_idx"]

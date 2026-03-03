@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.0001  |  Classifier head LR: 0.001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8296 | TEST acc=0.8401 | macroP/R/F1=0.8144/0.8763/0.8296 | top3=0.9476 | top5=0.9706
+
+GRID_METRIC val_macro_f1 0.829630
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.840088
+GRID_METRIC val_top3 0.947142
+GRID_METRIC val_top5 0.971036
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4797 ± 0.0000
+Test Acc        : 0.8401 ± 0.0000
+Macro Precision : 0.8144 ± 0.0000
+Macro Recall    : 0.8763 ± 0.0000
+Macro F1        : 0.8296 ± 0.0000
+Top-3 Acc       : 0.9476 ± 0.0000
+Top-5 Acc       : 0.9706 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20711 (84.0135%)
+Errors (off-diagonal) count: 3941 (15.9865%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=48)
+ 2. kidney stone  →  pyelonephritis   (count=25)
+ 3. schizophrenia  →  psychotic disorder   (count=22)
+ 4. cholecystitis  →  gallstone   (count=22)
+ 5. spondylosis  →  degenerative disc disease   (count=22)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+thyroid disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+epilepsy | 7 | 1.0000 | 0.7778 | 1.0000 | 0.8750
+thoracic aortic aneurysm | 17 | 0.8235 | 0.9333 | 0.8235 | 0.8750
+brachial neuritis | 91 | 0.8462 | 0.9059 | 0.8462 | 0.8750
+lumbago | 15 | 0.9333 | 0.8235 | 0.9333 | 0.8750
+heart contusion | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+gynecomastia | 8 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+wilson disease | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+guillain barre syndrome | 5 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p001_elr1em4_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p001_elr1em4_bs32_h256_128_64.jpg
+Total runtime: 6722.0s

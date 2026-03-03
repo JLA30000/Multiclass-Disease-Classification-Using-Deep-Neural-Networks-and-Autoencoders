@@ -1,0 +1,41 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+[seed 1] VAL macroF1=0.8473 | TEST acc=0.8581 | macroP/R/F1=0.8354/0.8908/0.8474 | top3=0.9583 | top5=0.9786
+
+GRID_METRIC val_macro_f1 0.847348
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.857977
+GRID_METRIC val_top3 0.956837
+GRID_METRIC val_top5 0.978338
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.3454 ± 0.0000
+Test Acc        : 0.8581 ± 0.0000
+Macro Precision : 0.8354 ± 0.0000
+Macro Recall    : 0.8908 ± 0.0000
+Macro F1        : 0.8474 ± 0.0000
+Top-3 Acc       : 0.9583 ± 0.0000
+Top-5 Acc       : 0.9786 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21153 (85.8064%)
+Errors (off-diagonal) count: 3499 (14.1936%)
+Traceback (most recent call last):
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\class_weighted_classifier.py", line 489, in <module>
+    main()
+    ~~~~^^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\class_weighted_classifier.py", line 431, in main
+    print(
+    ~~~~~^
+        f"\n=== Top-{topk} most commonly confused (True \u2192 Pred) across all seeds ===")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2192' in position 41: character maps to <undefined>

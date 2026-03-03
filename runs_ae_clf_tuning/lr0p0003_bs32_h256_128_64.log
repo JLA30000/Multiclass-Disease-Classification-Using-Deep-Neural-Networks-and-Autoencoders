@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8325 | TEST acc=0.8373 | macroP/R/F1=0.8129/0.8670/0.8229 | top3=0.9509 | top5=0.9750
+
+GRID_METRIC val_macro_f1 0.832487
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.842278
+GRID_METRIC val_top3 0.951523
+GRID_METRIC val_top5 0.976228
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4429 ± 0.0000
+Test Acc        : 0.8373 ± 0.0000
+Macro Precision : 0.8129 ± 0.0000
+Macro Recall    : 0.8670 ± 0.0000
+Macro F1        : 0.8229 ± 0.0000
+Top-3 Acc       : 0.9509 ± 0.0000
+Top-5 Acc       : 0.9750 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20640 (83.7255%)
+Errors (off-diagonal) count: 4012 (16.2745%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=49)
+ 2. cholecystitis  →  gallstone   (count=22)
+ 3. spondylosis  →  degenerative disc disease   (count=22)
+ 4. seborrheic keratosis  →  skin pigmentation disorder   (count=21)
+ 5. depression  →  post-traumatic stress disorder (ptsd)   (count=21)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+mitral valve disease | 51 | 0.8039 | 0.9535 | 0.8039 | 0.8723
+pelvic organ prolapse | 44 | 0.9318 | 0.8200 | 0.9318 | 0.8723
+interstitial lung disease | 51 | 0.9412 | 0.8136 | 0.9412 | 0.8727
+hyperemesis gravidarum | 91 | 0.8681 | 0.8778 | 0.8681 | 0.8729
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+tourette syndrome | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_bs32_h256_128_64.jpg
+Total runtime: 986.3s

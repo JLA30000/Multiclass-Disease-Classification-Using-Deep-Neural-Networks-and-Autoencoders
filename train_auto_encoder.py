@@ -127,9 +127,10 @@ def main():
         model, val_loader,   criterion, device)
 
     print(
-        f"Epoch 0 | Train Loss: {init_train_loss:.6f} | Val Loss: {init_val_loss:.6f}")
-    print(
-        f"        Train BitAcc: {init_train_bitacc:.4f} | Val BitAcc: {init_val_bitacc:.4f}")
+        f"Initial metrics | "
+        f"train_loss={init_train_loss:.6f} val_loss={init_val_loss:.6f} "
+        f"train_bitacc={init_train_bitacc:.4f} val_bitacc={init_val_bitacc:.4f}"
+    )
 
     train_losses.append(init_train_loss)
     val_losses.append(init_val_loss)
@@ -143,7 +144,7 @@ def main():
         running_bitacc = 0.0
         nb = 0
 
-        for batch_idx, data in enumerate(train_loader):
+        for data in train_loader:
             data = data.to(device).float()
             optimizer.zero_grad()
 
@@ -158,9 +159,6 @@ def main():
                 outputs.detach(), data).item()
             nb += 1
 
-            if batch_idx % 50 == 0:
-                print(
-                    f"  Batch {batch_idx}/{len(train_loader)} - Loss: {loss.item():.6f}")
 
         avg_train_loss = running_loss / max(nb, 1)
         avg_train_bitacc = running_bitacc / max(nb, 1)
@@ -173,14 +171,8 @@ def main():
         train_bitaccs.append(avg_train_bitacc)
         val_bitaccs.append(avg_val_bitacc)
 
-        print(f"\nEpoch [{epoch}/{args.epochs}]")
-        print(
-            f"Train Loss: {avg_train_loss:.6f} | Val Loss: {avg_val_loss:.6f}")
-        print(
-            f"Train BitAcc: {avg_train_bitacc:.4f} | Val BitAcc: {avg_val_bitacc:.4f}")
-        print("-" * 60)
-
         # Early stopping on VAL loss (minimize)
+        stop_now = False
         if epoch >= args.min_epochs:
             if (best_val_loss - avg_val_loss) > args.min_delta:
                 best_val_loss = avg_val_loss
@@ -189,12 +181,10 @@ def main():
                 patience_counter = 0
             else:
                 patience_counter += 1
-                print(
-                    f"  No VAL loss improvement: {patience_counter}/{args.patience}")
                 if patience_counter >= args.patience:
-                    print(f"  ✗ Early stopping at epoch {epoch}")
-                    break
-
+                    stop_now = True
+        if stop_now:
+            break
     # Restore best (by VAL loss)
     if best_state is not None:
         model.load_state_dict(best_state)

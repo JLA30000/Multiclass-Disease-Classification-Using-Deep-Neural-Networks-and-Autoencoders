@@ -1,0 +1,57 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] VAL macroF1=0.8371 | TEST acc=0.8437 | macroP/R/F1=0.8110/0.8720/0.8252 | top3=0.9518 | top5=0.9759
+
+GRID_METRIC val_macro_f1 0.837067
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.847146
+GRID_METRIC val_top3 0.951645
+GRID_METRIC val_top5 0.974484
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4499 ± 0.0000
+Test Acc        : 0.8437 ± 0.0000
+Macro Precision : 0.8110 ± 0.0000
+Macro Recall    : 0.8720 ± 0.0000
+Macro F1        : 0.8252 ± 0.0000
+Top-3 Acc       : 0.9518 ± 0.0000
+Top-5 Acc       : 0.9759 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20798 (84.3664%)
+Errors (off-diagonal) count: 3854 (15.6336%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=43)
+ 2. cholecystitis  →  gallstone   (count=28)
+ 3. psychotic disorder  →  schizophrenia   (count=24)
+ 4. vaginal cyst  →  spontaneous abortion   (count=20)
+ 5. pneumonia  →  acute bronchospasm   (count=18)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+thyroid disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+tendinitis | 68 | 0.8971 | 0.8472 | 0.8971 | 0.8714
+fracture of the leg | 68 | 0.8971 | 0.8472 | 0.8971 | 0.8714
+induced abortion | 29 | 0.8276 | 0.9231 | 0.8276 | 0.8727
+cardiomyopathy | 31 | 1.0000 | 0.7750 | 1.0000 | 0.8732
+volvulus | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+vitamin d deficiency | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+vitamin b12 deficiency | 8 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+aspergillosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_bs64_h256_128_64.jpg
+Total runtime: 905.6s

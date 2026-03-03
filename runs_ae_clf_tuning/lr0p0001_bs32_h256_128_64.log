@@ -1,0 +1,57 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] VAL macroF1=0.8367 | TEST acc=0.8482 | macroP/R/F1=0.8225/0.8817/0.8342 | top3=0.9546 | top5=0.9764
+
+GRID_METRIC val_macro_f1 0.836696
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.851000
+GRID_METRIC val_top3 0.953065
+GRID_METRIC val_top5 0.976025
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.3997 ± 0.0000
+Test Acc        : 0.8482 ± 0.0000
+Macro Precision : 0.8225 ± 0.0000
+Macro Recall    : 0.8817 ± 0.0000
+Macro F1        : 0.8342 ± 0.0000
+Top-3 Acc       : 0.9546 ± 0.0000
+Top-5 Acc       : 0.9764 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20909 (84.8166%)
+Errors (off-diagonal) count: 3743 (15.1834%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=40)
+ 2. psychotic disorder  →  schizophrenia   (count=33)
+ 3. cholecystitis  →  gallstone   (count=31)
+ 4. seborrheic keratosis  →  skin pigmentation disorder   (count=26)
+ 5. vaginal cyst  →  spontaneous abortion   (count=23)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+vitreous hemorrhage | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+insect bite | 67 | 0.9254 | 0.8493 | 0.9254 | 0.8857
+urethral disorder | 32 | 0.9688 | 0.8158 | 0.9688 | 0.8857
+intracerebral hemorrhage | 61 | 0.9180 | 0.8615 | 0.9180 | 0.8889
+mumps | 4 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+volvulus | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+anemia due to malignancy | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+trichinosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+aspergillosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_bs32_h256_128_64.jpg
+Total runtime: 1380.5s

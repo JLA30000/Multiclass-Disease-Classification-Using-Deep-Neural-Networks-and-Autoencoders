@@ -1,26 +1,40 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM ---- Hyperparams for the classifier-on-bottleneck ----
-set LR=0.0001
-set BS=64
-set EPOCHS=50
-set PATIENCE=10
-set MIN_EPOCHS=10
-set MIN_DELTA=0.001
+REM ==============================
+REM Autoencoder Hyperparameter Grid
+REM ==============================
 
-REM ---- Confusion matrix options ----
-set GROUP_SIZE=25
-set NORMALIZE=true
+REM ---- Dataset ----
+set DATA_PATH=diseases.csv
+set INDICES_FILE=split_indices_full_80_10_10.npz
 
-REM ---- Seeds 0..9 ----
-set SEEDS=0,1,2,3,4,5,6,7,8,9
+REM ---- Hyperparameter Grid ----
+set LRS=0.0005 0.0001
+set LATENTS=32 64 128
+set BATCHES=32 64
+set EPOCHS=100
+set PATIENCE=15
+set MIN_DELTA=0.0005
 
-echo Running AE-classifier for 10 seeds (seeds: %SEEDS%)
-python auto_encoder_classification_train.py --lr %LR% --batch_size %BS% --epochs %EPOCHS% ^
-  --patience %PATIENCE% --min_epochs %MIN_EPOCHS% --min_delta %MIN_DELTA% ^
-  --seeds %SEEDS% --group_size %GROUP_SIZE% --normalize %NORMALIZE%
+REM ---- Seeds ----
+set SEEDS=0
 
-echo.
-echo Done.
-pause
+for %%L in (%LRS%) do (
+    for %%Z in (%LATENTS%) do (
+        for %%B in (%BATCHES%) do (
+            for %%S in (%SEEDS%) do (
+                python train_auto_encoder_full.py ^
+                  --data_path %DATA_PATH% ^
+                  --indices_file %INDICES_FILE% ^
+                  --lr %%L ^
+                  --latent_dim %%Z ^
+                  --batch_size %%B ^
+                  --epochs %EPOCHS% ^
+                  --patience %PATIENCE% ^
+                  --min_delta %MIN_DELTA% ^
+                  --seed %%S
+            )
+        )
+    )
+)

@@ -1,0 +1,8 @@
+Best run summary
+RUN_ID=lr0.0005_bs32_wd1e-6_pat15
+metric=0.857096
+lr=0.0005
+batch_size=32
+weight_decay=1e-6
+patience=15
+log_file=runs_lr_tuning\lr0.0005_bs32_wd1e-6_pat15.log

@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.0001  |  Classifier head LR: 0.0003
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8455 | TEST acc=0.8497 | macroP/R/F1=0.8238/0.8798/0.8357 | top3=0.9528 | top5=0.9770
+
+GRID_METRIC val_macro_f1 0.845453
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.851406
+GRID_METRIC val_top3 0.952943
+GRID_METRIC val_top5 0.975822
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4247 ± 0.0000
+Test Acc        : 0.8497 ± 0.0000
+Macro Precision : 0.8238 ± 0.0000
+Macro Recall    : 0.8798 ± 0.0000
+Macro F1        : 0.8357 ± 0.0000
+Top-3 Acc       : 0.9528 ± 0.0000
+Top-5 Acc       : 0.9770 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20946 (84.9667%)
+Errors (off-diagonal) count: 3706 (15.0333%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=37)
+ 2. corneal disorder  →  dry eye of unknown cause   (count=32)
+ 3. skin polyp  →  skin disorder   (count=31)
+ 4. cholecystitis  →  gallstone   (count=28)
+ 5. schizophrenia  →  psychotic disorder   (count=26)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+vitreous hemorrhage | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+chronic constipation | 92 | 0.7935 | 1.0000 | 0.7935 | 0.8848
+brachial neuritis | 91 | 0.9341 | 0.8416 | 0.9341 | 0.8854
+missed abortion | 38 | 0.9211 | 0.8537 | 0.9211 | 0.8861
+urethritis | 46 | 0.8478 | 0.9286 | 0.8478 | 0.8864
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+volvulus | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+vitamin d deficiency | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+abscess of the lung | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_elr1em4_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_elr1em4_bs32_h256_128_64.jpg
+Total runtime: 2603.7s

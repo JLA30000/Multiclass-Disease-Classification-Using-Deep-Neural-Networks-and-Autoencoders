@@ -11,7 +11,10 @@ from pydantic import BaseModel, Field
 # Must match your training/export classes
 from neural_network_autoencoder import Autoencoder
 from neural_network import NeuralNetwork
+from logistic_regression_weighted import LogisticRegressionSoftmax
 from fastapi.middleware.cors import CORSMiddleware
+
+import xgboost as xgb
 
 
 # ============================================================
@@ -27,7 +30,25 @@ CW_BUNDLE_PATHS = {
     "cw_full": r"export_cw/cw_classifier.bundle.pt",
 }
 
-ModelKey = Literal["ae_t100", "ae_t200", "ae_t300", "cw_full"]
+XGB_BUNDLE_PATHS = {
+    "xgb_full": r"export_xgb/xgb_classifier.bundle.pt",
+}
+
+LR_BUNDLE_PATHS = {
+    "lr_full": r"export_lr/lr_classifier.bundle.pt",
+}
+
+AE_CLF_FULL_BUNDLE_PATHS = {
+    "ae_clf_full": r"export_ae_clf/ae_clf_full.bundle.pt",
+}
+
+ModelKey = Literal[
+    "ae_t100", "ae_t200", "ae_t300",
+    "cw_full",
+    "xgb_full",
+    "lr_full",
+    "ae_clf_full",
+]
 
 
 # ============================================================
@@ -268,6 +289,129 @@ class CWBundle(BaseBundle):
         return softmax_topk(probs, self.label_names)
 
 
+class XGBBundle(BaseBundle):
+    model_type = "xgb"
+
+    def __init__(self, model_key: str, bundle_path: str, device: torch.device):
+        super().__init__(model_key, bundle_path, device)
+
+        try:
+            booster_raw = self.bundle["xgb_booster_raw"]
+        except KeyError as e:
+            raise KeyError(f"[{model_key}] XGB bundle missing key {e}.") from e
+
+        self.bst = xgb.Booster()
+        self.bst.load_model(bytearray(booster_raw))
+
+    def predict(self, x_np: np.ndarray, temperature: float = 1.0) -> Dict[str, Any]:
+        dm = xgb.DMatrix(x_np.reshape(1, -1))
+        probs_np = self.bst.predict(dm)[0]  # [C] softprob output
+        if temperature != 1.0:
+            # apply temperature in log-space
+            log_probs = np.log(np.clip(probs_np, 1e-30, None)) / float(temperature)
+            log_probs -= log_probs.max()
+            probs_np = np.exp(log_probs)
+            probs_np /= probs_np.sum()
+        probs = torch.from_numpy(probs_np).float()
+        return softmax_topk(probs, self.label_names)
+
+
+class LRBundle(BaseBundle):
+    model_type = "lr"
+
+    def __init__(self, model_key: str, bundle_path: str, device: torch.device):
+        super().__init__(model_key, bundle_path, device)
+
+        try:
+            clf_sd = self.bundle["classifier_state_dict"]
+        except KeyError as e:
+            raise KeyError(f"[{model_key}] LR bundle missing key {e}.") from e
+
+        input_dim = int(self.cfg["input_dim"])
+        num_classes = int(self.cfg["num_classes"])
+
+        if len(self.feature_cols) != input_dim:
+            raise ValueError(
+                f"[{model_key}] feature_cols ({len(self.feature_cols)}) != input_dim ({input_dim})")
+        if len(self.label_names) != num_classes:
+            raise ValueError(
+                f"[{model_key}] label_names ({len(self.label_names)}) != num_classes ({num_classes})")
+
+        self.clf = LogisticRegressionSoftmax(
+            input_dim=input_dim, num_classes=num_classes,
+        ).to(device)
+        self.clf.load_state_dict(clf_sd)
+        self.clf.eval()
+
+    @torch.no_grad()
+    def predict(self, x_np: np.ndarray, temperature: float = 1.0) -> Dict[str, Any]:
+        x = torch.from_numpy(x_np).to(
+            self.device).float().unsqueeze(0)  # [1, D]
+        logits = self.clf(x).squeeze(0)                                  # [C]
+        if temperature != 1.0:
+            logits = logits / float(temperature)
+        probs = torch.softmax(logits, dim=0)
+        return softmax_topk(probs, self.label_names)
+
+
+class AEClfFullBundle(BaseBundle):
+    model_type = "ae_clf_full"
+
+    def __init__(self, model_key: str, bundle_path: str, device: torch.device):
+        super().__init__(model_key, bundle_path, device)
+
+        try:
+            enc_sd = self.bundle["encoder_state_dict"]
+            clf_sd = self.bundle["classifier_state_dict"]
+        except KeyError as e:
+            raise KeyError(f"[{model_key}] AE-CLF-Full bundle missing key {e}.") from e
+
+        raw_input_dim = int(self.cfg["raw_input_dim"])
+        latent_dim = int(self.cfg["latent_dim"])
+        ae_hidden_dims = tuple(self.cfg["ae_hidden_dims"])
+        z_dim = int(self.cfg["z_dim"])
+        hidden_dims = list(self.cfg["hidden_dims"])
+        activation = str(self.cfg["activation"])
+        num_classes = int(self.cfg["num_classes"])
+
+        if len(self.feature_cols) != raw_input_dim:
+            raise ValueError(
+                f"[{model_key}] feature_cols ({len(self.feature_cols)}) != raw_input_dim ({raw_input_dim})")
+        if len(self.label_names) != num_classes:
+            raise ValueError(
+                f"[{model_key}] label_names ({len(self.label_names)}) != num_classes ({num_classes})")
+
+        # Reconstruct encoder architecture via Autoencoder, then load fine-tuned encoder weights
+        ae_shell = Autoencoder(
+            input_dim=raw_input_dim,
+            latent_dim=latent_dim,
+            hidden_dims=ae_hidden_dims,
+        )
+        self.encoder = ae_shell.encoder.to(device)
+        self.encoder.load_state_dict(enc_sd)
+        self.encoder.eval()
+
+        self.clf = NeuralNetwork(
+            input_dim=z_dim,
+            hidden_dims=hidden_dims,
+            output_dim=num_classes,
+            activation=activation,
+        ).to(device)
+        self.clf.load_state_dict(clf_sd)
+        self.clf.eval()
+
+    @torch.no_grad()
+    def predict(self, x_np: np.ndarray, temperature: float = 1.0) -> Dict[str, Any]:
+        x = torch.from_numpy(x_np).to(
+            self.device).float().unsqueeze(0)  # [1, D]
+        z = self.encoder(x)                                              # [1, z_dim]
+        logits = self.clf(z).squeeze(0)                                  # [C]
+        if temperature != 1.0:
+            logits = logits / float(temperature)
+        probs = torch.softmax(logits, dim=0)
+        return softmax_topk(probs, self.label_names)
+
+
 # ============================================================
 # FastAPI app
 # ============================================================
@@ -277,6 +421,9 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 AE_MODELS: Dict[str, AEBundle] = {}
 CW_MODELS: Dict[str, CWBundle] = {}
+XGB_MODELS: Dict[str, XGBBundle] = {}
+LR_MODELS: Dict[str, LRBundle] = {}
+AE_CLF_FULL_MODELS: Dict[str, AEClfFullBundle] = {}
 
 app.add_middleware(
     CORSMiddleware,
@@ -293,6 +440,12 @@ def startup_load_models():
         AE_MODELS[k] = AEBundle(model_key=k, bundle_path=path, device=DEVICE)
     for k, path in CW_BUNDLE_PATHS.items():
         CW_MODELS[k] = CWBundle(model_key=k, bundle_path=path, device=DEVICE)
+    for k, path in XGB_BUNDLE_PATHS.items():
+        XGB_MODELS[k] = XGBBundle(model_key=k, bundle_path=path, device=DEVICE)
+    for k, path in LR_BUNDLE_PATHS.items():
+        LR_MODELS[k] = LRBundle(model_key=k, bundle_path=path, device=DEVICE)
+    for k, path in AE_CLF_FULL_BUNDLE_PATHS.items():
+        AE_CLF_FULL_MODELS[k] = AEClfFullBundle(model_key=k, bundle_path=path, device=DEVICE)
 
 
 # ============================================================
@@ -306,6 +459,9 @@ def health():
         "models_loaded": {
             "ae": list(AE_MODELS.keys()),
             "cw": list(CW_MODELS.keys()),
+            "xgb": list(XGB_MODELS.keys()),
+            "lr": list(LR_MODELS.keys()),
+            "ae_clf_full": list(AE_CLF_FULL_MODELS.keys()),
         },
     }
 
@@ -315,13 +471,12 @@ def schema():
     """
     Returns feature columns per model (these are your symptom labels).
     """
-    if not AE_MODELS and not CW_MODELS:
+    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
+    if not all_models:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     per_model: Dict[str, List[str]] = {}
-    for k, m in AE_MODELS.items():
-        per_model[k] = m.feature_cols
-    for k, m in CW_MODELS.items():
+    for k, m in all_models.items():
         per_model[k] = m.feature_cols
 
     return {"per_model_feature_cols": per_model}
@@ -336,17 +491,14 @@ def symptoms():
     If the four models use the same feature_cols (likely), `symptoms` will be that list.
     If they differ, `symptoms` is the union, and `per_model_symptoms` tells you each model's list.
     """
-    if not AE_MODELS and not CW_MODELS:
+    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
+    if not all_models:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     per_model: Dict[str, List[str]] = {}
     all_syms: Set[str] = set()
 
-    for k, m in AE_MODELS.items():
-        per_model[k] = m.feature_cols
-        all_syms.update(m.feature_cols)
-
-    for k, m in CW_MODELS.items():
+    for k, m in all_models.items():
         per_model[k] = m.feature_cols
         all_syms.update(m.feature_cols)
 
@@ -364,27 +516,15 @@ def symptoms():
 @app.post("/predict_symptoms", response_model=PredictResponse)
 def predict_symptoms(req: PredictSymptomsRequest):
     """
-    User inputs a checklist of symptoms; backend converts to binary vector and runs all 4 models.
+    User inputs a checklist of symptoms; backend converts to binary vector and runs all models.
     """
-    if not AE_MODELS and not CW_MODELS:
+    all_models = {**AE_MODELS, **CW_MODELS, **XGB_MODELS, **LR_MODELS, **AE_CLF_FULL_MODELS}
+    if not all_models:
         raise HTTPException(status_code=503, detail="Models not loaded.")
 
     preds: List[ModelPrediction] = []
 
-    for model_key, model in AE_MODELS.items():
-        x_np = model.build_binary_feature_vector(
-            req.symptoms, strict=req.strict)
-        out = model.predict(x_np, temperature=req.temperature)
-        preds.append(ModelPrediction(
-            model_key=model_key,
-            model_type=model.model_type,
-            num_classes=model.num_classes,
-            top1=TopItem(**out["top1"]),
-            top3=[TopItem(**d) for d in out["top3"]],
-            top5=[TopItem(**d) for d in out["top5"]],
-        ))
-
-    for model_key, model in CW_MODELS.items():
+    for model_key, model in all_models.items():
         x_np = model.build_binary_feature_vector(
             req.symptoms, strict=req.strict)
         out = model.predict(x_np, temperature=req.temperature)

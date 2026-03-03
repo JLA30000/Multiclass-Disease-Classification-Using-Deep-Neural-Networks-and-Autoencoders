@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.0001  |  Classifier head LR: 0.0001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8459 | TEST acc=0.8490 | macroP/R/F1=0.8284/0.8768/0.8374 | top3=0.9523 | top5=0.9749
+
+GRID_METRIC val_macro_f1 0.845914
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.851568
+GRID_METRIC val_top3 0.954525
+GRID_METRIC val_top5 0.975944
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4227 ± 0.0000
+Test Acc        : 0.8490 ± 0.0000
+Macro Precision : 0.8284 ± 0.0000
+Macro Recall    : 0.8768 ± 0.0000
+Macro F1        : 0.8374 ± 0.0000
+Top-3 Acc       : 0.9523 ± 0.0000
+Top-5 Acc       : 0.9749 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20930 (84.9018%)
+Errors (off-diagonal) count: 3722 (15.0982%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. seborrheic keratosis  →  skin pigmentation disorder   (count=30)
+ 2. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=29)
+ 3. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=29)
+ 4. schizophrenia  →  psychotic disorder   (count=28)
+ 5. cholecystitis  →  gallstone   (count=24)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+folate deficiency | 4 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+drug abuse | 61 | 0.8525 | 0.9286 | 0.8525 | 0.8889
+neuropathy due to drugs | 4 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+tietze syndrome | 34 | 0.8235 | 0.9655 | 0.8235 | 0.8889
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em4_bs32_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em4_bs32_h512_256_128_64.jpg
+Total runtime: 1992.7s

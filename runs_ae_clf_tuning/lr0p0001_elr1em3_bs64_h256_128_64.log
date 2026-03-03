@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.001  |  Classifier head LR: 0.0001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8420 | TEST acc=0.8468 | macroP/R/F1=0.8222/0.8775/0.8339 | top3=0.9513 | top5=0.9741
+
+GRID_METRIC val_macro_f1 0.841984
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.850189
+GRID_METRIC val_top3 0.950996
+GRID_METRIC val_top5 0.973956
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4595 ± 0.0000
+Test Acc        : 0.8468 ± 0.0000
+Macro Precision : 0.8222 ± 0.0000
+Macro Recall    : 0.8775 ± 0.0000
+Macro F1        : 0.8339 ± 0.0000
+Top-3 Acc       : 0.9513 ± 0.0000
+Top-5 Acc       : 0.9741 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20876 (84.6828%)
+Errors (off-diagonal) count: 3776 (15.3172%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=58)
+ 2. cholecystitis  →  gallstone   (count=33)
+ 3. kidney stone  →  pyelonephritis   (count=32)
+ 4. psychotic disorder  →  schizophrenia   (count=27)
+ 5. temporary or benign blood in urine  →  cystitis   (count=24)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+hemophilia | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+acute respiratory distress syndrome (ards) | 45 | 0.9111 | 0.8542 | 0.9111 | 0.8817
+intestinal malabsorption | 16 | 0.9375 | 0.8333 | 0.9375 | 0.8824
+peritonitis | 38 | 0.8947 | 0.8718 | 0.8947 | 0.8831
+tendinitis | 68 | 0.8971 | 0.8714 | 0.8971 | 0.8841
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs64_h256_128_64.jpg
+Total runtime: 1327.3s

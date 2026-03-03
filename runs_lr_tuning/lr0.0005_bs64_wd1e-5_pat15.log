@@ -1,0 +1,91 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+[seed 1] Epoch 01/100 | Val Macro F1: 0.7138
+[seed 1] Epoch 02/100 | Val Macro F1: 0.7691
+[seed 1] Epoch 03/100 | Val Macro F1: 0.7921
+[seed 1] Epoch 04/100 | Val Macro F1: 0.8048
+[seed 1] Epoch 05/100 | Val Macro F1: 0.8160
+[seed 1] Epoch 06/100 | Val Macro F1: 0.8191
+[seed 1] Epoch 07/100 | Val Macro F1: 0.8264
+[seed 1] Epoch 08/100 | Val Macro F1: 0.8291
+[seed 1] Epoch 09/100 | Val Macro F1: 0.8302
+[seed 1] Epoch 10/100 | Val Macro F1: 0.8314
+[seed 1] Epoch 11/100 | Val Macro F1: 0.8369
+[seed 1] Epoch 12/100 | Val Macro F1: 0.8398
+[seed 1] Epoch 13/100 | Val Macro F1: 0.8434
+[seed 1] Epoch 14/100 | Val Macro F1: 0.8426
+[seed 1] Epoch 15/100 | Val Macro F1: 0.8432
+[seed 1] Epoch 16/100 | Val Macro F1: 0.8447
+[seed 1] Epoch 17/100 | Val Macro F1: 0.8449
+[seed 1] Epoch 18/100 | Val Macro F1: 0.8457
+[seed 1] Epoch 19/100 | Val Macro F1: 0.8469
+[seed 1] Epoch 20/100 | Val Macro F1: 0.8458
+[seed 1] Epoch 21/100 | Val Macro F1: 0.8482
+[seed 1] Epoch 22/100 | Val Macro F1: 0.8478
+[seed 1] Epoch 23/100 | Val Macro F1: 0.8514
+[seed 1] Epoch 24/100 | Val Macro F1: 0.8504
+[seed 1] Epoch 25/100 | Val Macro F1: 0.8507
+[seed 1] Epoch 26/100 | Val Macro F1: 0.8500
+[seed 1] Epoch 27/100 | Val Macro F1: 0.8486
+[seed 1] Epoch 28/100 | Val Macro F1: 0.8490
+[seed 1] Epoch 29/100 | Val Macro F1: 0.8488
+[seed 1] Epoch 30/100 | Val Macro F1: 0.8496
+[seed 1] Epoch 31/100 | Val Macro F1: 0.8485
+[seed 1] Epoch 32/100 | Val Macro F1: 0.8485
+[seed 1] Epoch 33/100 | Val Macro F1: 0.8475
+[seed 1] Epoch 34/100 | Val Macro F1: 0.8467
+[seed 1] Epoch 35/100 | Val Macro F1: 0.8478
+[seed 1] Epoch 36/100 | Val Macro F1: 0.8463
+[seed 1] Epoch 37/100 | Val Macro F1: 0.8469
+[seed 1] Epoch 38/100 | Val Macro F1: 0.8455
+[seed 1] Early stopping (no improvement for 15 epochs)
+[seed 1] loss=0.5742 | acc=0.8637 | macroP/R/F1=0.8215/0.9094/0.8465 | top3=0.9584 | top5=0.9779 | best_val_f1=0.8514
+
+=== TEST METRICS over seeds (mean +/- std) ===
+Test Loss       : 0.5742 +/- 0.0000
+Test Acc        : 0.8637 +/- 0.0000
+Macro Precision : 0.8215 +/- 0.0000
+Macro Recall    : 0.9094 +/- 0.0000
+Macro F1        : 0.8465 +/- 0.0000
+Top-3 Acc       : 0.9584 +/- 0.0000
+Top-5 Acc       : 0.9779 +/- 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21293 (86.3743%)
+Errors (off-diagonal) count: 3359 (13.6257%)
+
+=== Top-5 most commonly confused (True -> Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  ->  infectious gastroenteritis   (count=45)
+ 2. cholecystitis  ->  gallstone   (count=29)
+ 3. acute bronchitis  ->  chronic obstructive pulmonary disease (copd)   (count=21)
+ 4. schizophrenia  ->  psychotic disorder   (count=20)
+ 5. temporary or benign blood in urine  ->  bladder disorder   (count=20)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+diabetes insipidus | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+intracerebral hemorrhage | 61 | 0.8852 | 0.9153 | 0.8852 | 0.9000
+chalazion | 68 | 0.9265 | 0.8750 | 0.9265 | 0.9000
+fracture of the leg | 68 | 0.8676 | 0.9365 | 0.8676 | 0.9008
+laryngitis | 68 | 0.8676 | 0.9365 | 0.8676 | 0.9008
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+tourette syndrome | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+toxoplasmosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+best_val_macro_f1_mean=0.851360
+best_val_macro_f1_std=0.000000
+test_macro_f1_mean=0.846518
+test_macro_f1_std=0.000000
+
+Done.
+Saved heatmap: runs_lr_tuning\LR_lr0.0005_bs64_wd1e-5_pat15.png and runs_lr_tuning\LR_lr0.0005_bs64_wd1e-5_pat15.jpg
+Total runtime: 3172.3s

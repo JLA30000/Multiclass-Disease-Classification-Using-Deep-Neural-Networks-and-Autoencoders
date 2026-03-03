@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.0001  |  Classifier head LR: 0.001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8314 | TEST acc=0.8399 | macroP/R/F1=0.8098/0.8729/0.8238 | top3=0.9478 | top5=0.9716
+
+GRID_METRIC val_macro_f1 0.831421
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.840209
+GRID_METRIC val_top3 0.948684
+GRID_METRIC val_top5 0.970873
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4805 ± 0.0000
+Test Acc        : 0.8399 ± 0.0000
+Macro Precision : 0.8098 ± 0.0000
+Macro Recall    : 0.8729 ± 0.0000
+Macro F1        : 0.8238 ± 0.0000
+Top-3 Acc       : 0.9478 ± 0.0000
+Top-5 Acc       : 0.9716 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20704 (83.9851%)
+Errors (off-diagonal) count: 3948 (16.0149%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=36)
+ 2. schizophrenia  →  psychotic disorder   (count=25)
+ 3. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=25)
+ 4. vaginal cyst  →  spontaneous abortion   (count=24)
+ 5. spondylosis  →  degenerative disc disease   (count=22)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+central atherosclerosis | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+hemophilia | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+delirium | 60 | 0.8333 | 0.9259 | 0.8333 | 0.8772
+tendinitis | 68 | 0.8971 | 0.8592 | 0.8971 | 0.8777
+jaw disorder | 34 | 0.9706 | 0.8049 | 0.9706 | 0.8800
+irritable bowel syndrome | 51 | 0.9412 | 0.8276 | 0.9412 | 0.8807
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amyotrophic lateral sclerosis (als) | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p001_elr1em4_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p001_elr1em4_bs64_h256_128_64.jpg
+Total runtime: 1078.9s

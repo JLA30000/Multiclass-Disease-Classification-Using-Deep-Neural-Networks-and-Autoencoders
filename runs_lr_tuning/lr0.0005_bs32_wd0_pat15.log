@@ -1,0 +1,70 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 773
+Random baseline acc: 0.1294%
+======================================================================
+[seed 1] Epoch 01/100 | Val Macro F1: 0.7415
+[seed 1] Epoch 02/100 | Val Macro F1: 0.7962
+[seed 1] Epoch 03/100 | Val Macro F1: 0.8263
+[seed 1] Epoch 04/100 | Val Macro F1: 0.8315
+[seed 1] Epoch 05/100 | Val Macro F1: 0.8406
+[seed 1] Epoch 06/100 | Val Macro F1: 0.8467
+[seed 1] Epoch 07/100 | Val Macro F1: 0.8525
+[seed 1] Epoch 08/100 | Val Macro F1: 0.8565
+[seed 1] Epoch 09/100 | Val Macro F1: 0.8581
+[seed 1] Epoch 10/100 | Val Macro F1: 0.8570
+[seed 1] Epoch 11/100 | Val Macro F1: 0.8565
+[seed 1] Epoch 12/100 | Val Macro F1: 0.8567
+[seed 1] Epoch 13/100 | Val Macro F1: 0.8559
+[seed 1] Epoch 14/100 | Val Macro F1: 0.8559
+[seed 1] Epoch 15/100 | Val Macro F1: 0.8551
+[seed 1] Epoch 16/100 | Val Macro F1: 0.8543
+[seed 1] Epoch 17/100 | Val Macro F1: 0.8545
+[seed 1] Epoch 18/100 | Val Macro F1: 0.8548
+[seed 1] Epoch 19/100 | Val Macro F1: 0.8559
+[seed 1] Epoch 20/100 | Val Macro F1: 0.8551
+[seed 1] Epoch 21/100 | Val Macro F1: 0.8545
+[seed 1] Epoch 22/100 | Val Macro F1: 0.8552
+[seed 1] Epoch 23/100 | Val Macro F1: 0.8546
+Traceback (most recent call last):
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\logistic_regression_weighted.py", line 483, in <module>
+    main()
+    ~~~~^^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\logistic_regression_weighted.py", line 343, in main
+    m, best_val_f1, cm, y_true, y_pred = train_one_seed(
+                                         ~~~~~~~~~~~~~~^
+        seed=s,
+        ^^^^^^^
+    ...<9 lines>...
+        device=device
+        ^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\logistic_regression_weighted.py", line 233, in train_one_seed
+    val_loss, val_acc, val_p, val_r, val_f1, val_top3, val_top5, _, _, _ = run_eval(
+                                                                           ~~~~~~~~^
+        model, val_loader, criterion, device, num_classes
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\utils\_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\logistic_regression_weighted.py", line 89, in run_eval
+    top5 = top_k_accuracy_score(
+           ~~~~~~~~~~~~~~~~~~~~^
+        all_true, all_probs, k=k5, labels=labels) if len(all_true) else 0.0
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\utils\_param_validation.py", line 218, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\sklearn\metrics\_ranking.py", line 2069, in top_k_accuracy_score
+    sorted_pred = np.argsort(y_score, axis=1, kind="mergesort")[:, ::-1]
+                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\_core\fromnumeric.py", line 1242, in argsort
+    return _wrapfunc(
+        a, 'argsort', axis=axis, kind=kind, order=order, stable=stable
+    )
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\numpy\_core\fromnumeric.py", line 57, in _wrapfunc
+    return bound(*args, **kwds)
+KeyboardInterrupt

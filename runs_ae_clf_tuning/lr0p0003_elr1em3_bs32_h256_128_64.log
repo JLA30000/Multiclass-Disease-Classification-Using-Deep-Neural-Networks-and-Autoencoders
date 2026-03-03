@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.001  |  Classifier head LR: 0.0003
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8401 | TEST acc=0.8429 | macroP/R/F1=0.8241/0.8726/0.8332 | top3=0.9501 | top5=0.9730
+
+GRID_METRIC val_macro_f1 0.840145
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.845970
+GRID_METRIC val_top3 0.949089
+GRID_METRIC val_top5 0.973226
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4408 ± 0.0000
+Test Acc        : 0.8429 ± 0.0000
+Macro Precision : 0.8241 ± 0.0000
+Macro Recall    : 0.8726 ± 0.0000
+Macro F1        : 0.8332 ± 0.0000
+Top-3 Acc       : 0.9501 ± 0.0000
+Top-5 Acc       : 0.9730 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20780 (84.2934%)
+Errors (off-diagonal) count: 3872 (15.7066%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=48)
+ 2. acute bronchitis  →  chronic obstructive pulmonary disease (copd)   (count=25)
+ 3. schizophrenia  →  personality disorder   (count=23)
+ 4. skin polyp  →  skin disorder   (count=23)
+ 5. marijuana abuse  →  personality disorder   (count=22)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+moyamoya disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+thyroid disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+scleroderma | 34 | 0.7941 | 1.0000 | 0.7941 | 0.8852
+ankylosing spondylitis | 61 | 0.8852 | 0.8852 | 0.8852 | 0.8852
+pain disorder affecting the neck | 39 | 0.8974 | 0.8750 | 0.8974 | 0.8861
+oppositional disorder | 43 | 0.9070 | 0.8667 | 0.9070 | 0.8864
+myoclonus | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+vitamin d deficiency | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+neurofibromatosis | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+neonatal jaundice | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_elr1em3_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_elr1em3_bs32_h256_128_64.jpg
+Total runtime: 1127.2s

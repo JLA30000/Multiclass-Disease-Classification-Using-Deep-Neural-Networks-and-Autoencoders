@@ -223,9 +223,6 @@ def train_one_seed(
             model, val_loader, criterion, device, num_classes
         )
 
-        print(
-            f"[seed {seed}] Epoch {epoch:02d}/{epochs} | Val Macro F1: {val_f1:.4f}")
-
         if (val_f1 - best_val_f1) > min_delta:
             best_val_f1 = val_f1
             best_state = copy.deepcopy(model.state_dict())
@@ -241,11 +238,27 @@ def train_one_seed(
     if best_state is not None:
         model.load_state_dict(best_state)
 
+    # Evaluate best model on VALIDATION set (for grid search selection)
+    val_loss, val_acc, val_p, val_r, val_f1, val_top3, val_top5, _, _, _ = run_eval(
+        model, val_loader, criterion, device, num_classes
+    )
+
+    val_metrics = {
+        "loss": val_loss,
+        "acc": val_acc,
+        "macro_p": val_p,
+        "macro_r": val_r,
+        "macro_f1": val_f1,
+        "top3": val_top3,
+        "top5": val_top5
+    }
+
+    # Evaluate best model on TEST set (for final reporting)
     test_loss, test_acc, test_p, test_r, test_f1, test_top3, test_top5, cm, y_true, y_pred = run_eval(
         model, test_loader, criterion, device, num_classes
     )
 
-    metrics = {
+    test_metrics = {
         "loss": test_loss,
         "acc": test_acc,
         "macro_p": test_p,
@@ -254,7 +267,7 @@ def train_one_seed(
         "top3": test_top3,
         "top5": test_top5
     }
-    return metrics, cm, y_true, y_pred
+    return val_metrics, test_metrics, cm, y_true, y_pred
 
 
 def main():
@@ -321,13 +334,14 @@ def main():
     # ---- Run seeds ----
     t0 = time.time()
 
-    metrics_list = []
+    val_metrics_list = []
+    test_metrics_list = []
     cms = []
     all_true = []
     all_pred = []
 
     for s in seeds:
-        m, cm, y_true, y_pred = train_one_seed(
+        val_m, test_m, cm, y_true, y_pred = train_one_seed(
             seed=s,
             train_ds=train_ds, val_ds=val_ds, test_ds=test_ds,
             batch_size=args.batch_size,
@@ -341,18 +355,32 @@ def main():
             device=device
         )
 
-        metrics_list.append(m)
+        val_metrics_list.append(val_m)
+        test_metrics_list.append(test_m)
         cms.append(cm)
         all_true.append(y_true)
         all_pred.append(y_pred)
 
         print(f"[seed {s}] "
-              f"loss={m['loss']:.4f} | acc={m['acc']:.4f} | "
-              f"macroP/R/F1={m['macro_p']:.4f}/{m['macro_r']:.4f}/{m['macro_f1']:.4f} | "
-              f"top3={m['top3']:.4f} | top5={m['top5']:.4f}")
+              f"VAL macroF1={val_m['macro_f1']:.4f} | "
+              f"TEST acc={test_m['acc']:.4f} | "
+              f"macroP/R/F1={test_m['macro_p']:.4f}/{test_m['macro_r']:.4f}/{test_m['macro_f1']:.4f} | "
+              f"top3={test_m['top3']:.4f} | top5={test_m['top5']:.4f}")
 
     # ---- Mean ± std ----
-    def collect(k): return [m[k] for m in metrics_list]
+    def collect_val(k): return [m[k] for m in val_metrics_list]
+    def collect_test(k): return [m[k] for m in test_metrics_list]
+
+    # Grid-search parseable metric lines (mean VAL metrics across seeds)
+    val_mu_f1, val_sd_f1 = mean_std(collect_val("macro_f1"))
+    val_mu_acc, _ = mean_std(collect_val("acc"))
+    val_mu_top3, _ = mean_std(collect_val("top3"))
+    val_mu_top5, _ = mean_std(collect_val("top5"))
+    print(f"\nGRID_METRIC val_macro_f1 {val_mu_f1:.6f}")
+    print(f"GRID_METRIC val_macro_f1_std {val_sd_f1:.6f}")
+    print(f"GRID_METRIC val_acc {val_mu_acc:.6f}")
+    print(f"GRID_METRIC val_top3 {val_mu_top3:.6f}")
+    print(f"GRID_METRIC val_top5 {val_mu_top5:.6f}")
 
     print("\n=== TEST METRICS over seeds (mean ± std) ===")
     for key, name in [
@@ -364,7 +392,7 @@ def main():
         ("top3", "Top-3 Acc"),
         ("top5", "Top-5 Acc"),
     ]:
-        mu, sd = mean_std(collect(key))
+        mu, sd = mean_std(collect_test(key))
         print(f"{name:16s}: {mu:.4f} ± {sd:.4f}")
 
     # ---- Aggregated confusion (sum across seeds) ----

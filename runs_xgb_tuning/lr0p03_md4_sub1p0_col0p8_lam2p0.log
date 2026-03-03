@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 427, in <module>
+    main()
+    ~~~~^^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 249, in main
+    X_train = train_ds.features.astype(np.float32)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Tensor' object has no attribute 'astype'. Did you mean: 'dtype'?

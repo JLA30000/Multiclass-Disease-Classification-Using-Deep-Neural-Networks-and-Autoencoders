@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 1e-05  |  Classifier head LR: 0.0003
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8378 | TEST acc=0.8422 | macroP/R/F1=0.8158/0.8665/0.8256 | top3=0.9519 | top5=0.9760
+
+GRID_METRIC val_macro_f1 0.837819
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.845280
+GRID_METRIC val_top3 0.952984
+GRID_METRIC val_top5 0.975295
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4408 ± 0.0000
+Test Acc        : 0.8422 ± 0.0000
+Macro Precision : 0.8158 ± 0.0000
+Macro Recall    : 0.8665 ± 0.0000
+Macro F1        : 0.8256 ± 0.0000
+Top-3 Acc       : 0.9519 ± 0.0000
+Top-5 Acc       : 0.9760 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20761 (84.2163%)
+Errors (off-diagonal) count: 3891 (15.7837%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=30)
+ 2. cholecystitis  →  gallstone   (count=30)
+ 3. schizophrenia  →  psychotic disorder   (count=26)
+ 4. degenerative disc disease  →  spinal stenosis   (count=26)
+ 5. skin polyp  →  skin disorder   (count=25)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+central atherosclerosis | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+epididymitis | 51 | 0.9412 | 0.8276 | 0.9412 | 0.8807
+acute pancreatitis | 121 | 0.8264 | 0.9434 | 0.8264 | 0.8811
+pelvic organ prolapse | 44 | 0.9318 | 0.8367 | 0.9318 | 0.8817
+broken tooth | 16 | 0.9375 | 0.8333 | 0.9375 | 0.8824
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amblyopia | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_elr1em5_bs32_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_elr1em5_bs32_h512_256_128_64.jpg
+Total runtime: 1759.3s

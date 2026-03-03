@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 1e-05  |  Classifier head LR: 0.0003
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8400 | TEST acc=0.8453 | macroP/R/F1=0.8213/0.8744/0.8323 | top3=0.9523 | top5=0.9753
+
+GRID_METRIC val_macro_f1 0.839981
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.847471
+GRID_METRIC val_top3 0.953592
+GRID_METRIC val_top5 0.974687
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4360 ± 0.0000
+Test Acc        : 0.8453 ± 0.0000
+Macro Precision : 0.8213 ± 0.0000
+Macro Recall    : 0.8744 ± 0.0000
+Macro F1        : 0.8323 ± 0.0000
+Top-3 Acc       : 0.9523 ± 0.0000
+Top-5 Acc       : 0.9753 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20838 (84.5286%)
+Errors (off-diagonal) count: 3814 (15.4714%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=41)
+ 2. seborrheic keratosis  →  skin pigmentation disorder   (count=26)
+ 3. skin polyp  →  skin pigmentation disorder   (count=26)
+ 4. pneumonia  →  acute bronchospasm   (count=23)
+ 5. depression  →  post-traumatic stress disorder (ptsd)   (count=22)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+central atherosclerosis | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+sprain or strain | 121 | 0.8595 | 0.9043 | 0.8595 | 0.8814
+intestinal obstruction | 45 | 0.9333 | 0.8400 | 0.9333 | 0.8842
+drug abuse | 61 | 0.8197 | 0.9615 | 0.8197 | 0.8850
+insect bite | 67 | 0.9254 | 0.8493 | 0.9254 | 0.8857
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amyotrophic lateral sclerosis (als) | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0003_elr1em5_bs64_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0003_elr1em5_bs64_h512_256_128_64.jpg
+Total runtime: 1561.2s

@@ -1,0 +1,105 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+[seed 1] Epoch 01/100 | Val Macro F1: 0.8338
+[seed 1] Epoch 02/100 | Val Macro F1: 0.8433
+[seed 1] Epoch 03/100 | Val Macro F1: 0.8497
+[seed 1] Epoch 04/100 | Val Macro F1: 0.8480
+[seed 1] Epoch 05/100 | Val Macro F1: 0.8489
+[seed 1] Epoch 06/100 | Val Macro F1: 0.8467
+[seed 1] Epoch 07/100 | Val Macro F1: 0.8453
+[seed 1] Epoch 08/100 | Val Macro F1: 0.8488
+[seed 1] Epoch 09/100 | Val Macro F1: 0.8479
+[seed 1] Epoch 10/100 | Val Macro F1: 0.8518
+[seed 1] Epoch 11/100 | Val Macro F1: 0.8514
+[seed 1] Epoch 12/100 | Val Macro F1: 0.8503
+[seed 1] Epoch 13/100 | Val Macro F1: 0.8527
+[seed 1] Epoch 14/100 | Val Macro F1: 0.8503
+[seed 1] Epoch 15/100 | Val Macro F1: 0.8496
+[seed 1] Epoch 16/100 | Val Macro F1: 0.8507
+[seed 1] Epoch 17/100 | Val Macro F1: 0.8533
+[seed 1] Epoch 18/100 | Val Macro F1: 0.8505
+[seed 1] Epoch 19/100 | Val Macro F1: 0.8556
+[seed 1] Epoch 20/100 | Val Macro F1: 0.8528
+[seed 1] Epoch 21/100 | Val Macro F1: 0.8535
+[seed 1] Epoch 22/100 | Val Macro F1: 0.8532
+[seed 1] Epoch 23/100 | Val Macro F1: 0.8526
+[seed 1] Epoch 24/100 | Val Macro F1: 0.8523
+[seed 1] Epoch 25/100 | Val Macro F1: 0.8545
+[seed 1] Epoch 26/100 | Val Macro F1: 0.8510
+[seed 1] Epoch 27/100 | Val Macro F1: 0.8533
+[seed 1] Epoch 28/100 | Val Macro F1: 0.8525
+[seed 1] Epoch 29/100 | Val Macro F1: 0.8546
+[seed 1] Epoch 30/100 | Val Macro F1: 0.8536
+[seed 1] Epoch 31/100 | Val Macro F1: 0.8532
+[seed 1] Epoch 32/100 | Val Macro F1: 0.8563
+[seed 1] Epoch 33/100 | Val Macro F1: 0.8537
+[seed 1] Epoch 34/100 | Val Macro F1: 0.8521
+[seed 1] Epoch 35/100 | Val Macro F1: 0.8528
+[seed 1] Epoch 36/100 | Val Macro F1: 0.8547
+[seed 1] Epoch 37/100 | Val Macro F1: 0.8565
+[seed 1] Epoch 38/100 | Val Macro F1: 0.8522
+[seed 1] Epoch 39/100 | Val Macro F1: 0.8519
+[seed 1] Epoch 40/100 | Val Macro F1: 0.8541
+[seed 1] Epoch 41/100 | Val Macro F1: 0.8535
+[seed 1] Epoch 42/100 | Val Macro F1: 0.8542
+[seed 1] Epoch 43/100 | Val Macro F1: 0.8553
+[seed 1] Epoch 44/100 | Val Macro F1: 0.8552
+[seed 1] Epoch 45/100 | Val Macro F1: 0.8536
+[seed 1] Epoch 46/100 | Val Macro F1: 0.8552
+[seed 1] Epoch 47/100 | Val Macro F1: 0.8557
+[seed 1] Epoch 48/100 | Val Macro F1: 0.8566
+[seed 1] Epoch 49/100 | Val Macro F1: 0.8541
+[seed 1] Epoch 50/100 | Val Macro F1: 0.8547
+[seed 1] Epoch 51/100 | Val Macro F1: 0.8556
+[seed 1] Epoch 52/100 | Val Macro F1: 0.8540
+[seed 1] Early stopping (no improvement for 15 epochs)
+[seed 1] loss=0.2893 | acc=0.8641 | macroP/R/F1=0.8349/0.9070/0.8535 | top3=0.9617 | top5=0.9816 | best_val_f1=0.8565
+
+=== TEST METRICS over seeds (mean +/- std) ===
+Test Loss       : 0.2893 +/- 0.0000
+Test Acc        : 0.8641 +/- 0.0000
+Macro Precision : 0.8349 +/- 0.0000
+Macro Recall    : 0.9070 +/- 0.0000
+Macro F1        : 0.8535 +/- 0.0000
+Top-3 Acc       : 0.9617 +/- 0.0000
+Top-5 Acc       : 0.9816 +/- 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21301 (86.4068%)
+Errors (off-diagonal) count: 3351 (13.5932%)
+
+=== Top-5 most commonly confused (True -> Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  ->  infectious gastroenteritis   (count=38)
+ 2. cholecystitis  ->  gallstone   (count=30)
+ 3. infectious gastroenteritis  ->  noninfectious gastroenteritis   (count=25)
+ 4. skin polyp  ->  skin disorder   (count=24)
+ 5. schizophrenia  ->  personality disorder   (count=21)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+diabetes insipidus | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rectal disorder | 90 | 0.9000 | 0.9101 | 0.9000 | 0.9050
+heart failure | 91 | 0.8462 | 0.9747 | 0.8462 | 0.9059
+delirium | 60 | 0.8833 | 0.9298 | 0.8833 | 0.9060
+drug abuse | 61 | 0.8689 | 0.9464 | 0.8689 | 0.9060
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+best_val_macro_f1_mean=0.856501
+best_val_macro_f1_std=0.000000
+test_macro_f1_mean=0.853487
+test_macro_f1_std=0.000000
+
+Done.
+Saved heatmap: runs_lr_tuning\LR_lr0.005_bs64_wd1e-6_pat15.png and runs_lr_tuning\LR_lr0.005_bs64_wd1e-6_pat15.jpg
+Total runtime: 1309.4s

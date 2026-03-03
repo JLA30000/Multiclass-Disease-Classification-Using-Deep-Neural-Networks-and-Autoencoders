@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8264 | TEST acc=0.8423 | macroP/R/F1=0.8112/0.8780/0.8243 | top3=0.9515 | top5=0.9746
+
+GRID_METRIC val_macro_f1 0.826362
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.844185
+GRID_METRIC val_top3 0.950671
+GRID_METRIC val_top5 0.975255
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4050 ± 0.0000
+Test Acc        : 0.8423 ± 0.0000
+Macro Precision : 0.8112 ± 0.0000
+Macro Recall    : 0.8780 ± 0.0000
+Macro F1        : 0.8243 ± 0.0000
+Top-3 Acc       : 0.9515 ± 0.0000
+Top-5 Acc       : 0.9746 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20764 (84.2285%)
+Errors (off-diagonal) count: 3888 (15.7715%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. seborrheic keratosis  →  skin pigmentation disorder   (count=31)
+ 2. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=30)
+ 3. vaginal cyst  →  spontaneous abortion   (count=30)
+ 4. depression  →  post-traumatic stress disorder (ptsd)   (count=26)
+ 5. schizophrenia  →  psychotic disorder   (count=26)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+central atherosclerosis | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+ovarian cancer | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+fracture of the arm | 44 | 0.9318 | 0.8200 | 0.9318 | 0.8723
+dysthymic disorder | 50 | 0.8200 | 0.9318 | 0.8200 | 0.8723
+complex regional pain syndrome | 122 | 0.8279 | 0.9266 | 0.8279 | 0.8745
+conjunctivitis due to bacteria | 15 | 0.9333 | 0.8235 | 0.9333 | 0.8750
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amyotrophic lateral sclerosis (als) | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_bs64_h512_256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_bs64_h512_256_128_64.jpg
+Total runtime: 881.6s

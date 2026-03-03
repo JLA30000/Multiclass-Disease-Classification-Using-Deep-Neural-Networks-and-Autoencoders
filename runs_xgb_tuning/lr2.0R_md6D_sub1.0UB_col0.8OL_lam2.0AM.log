@@ -1,0 +1,13 @@
+Failed checking if argv[0] is an import path entry
+Traceback (most recent call last):
+  File "<frozen zipimport>", line 79, in __init__
+  File "<frozen importlib._bootstrap_external>", line 152, in _path_stat
+FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\_ryanDev\\ML_Projects\\ML_Project_Github_Upload\\xgboost_multiclass_weighted.py'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen zipimport>", line 83, in __init__
+  File "<frozen importlib._bootstrap_external>", line 137, in _path_split
+KeyboardInterrupt
+python: can't open file 'C:\\_ryanDev\\ML_Projects\\ML_Project_Github_Upload\\xgboost_multiclass_weighted.py': [Errno 2] No such file or directory

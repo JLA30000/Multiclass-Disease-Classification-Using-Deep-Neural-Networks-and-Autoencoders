@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading trained autoencoder...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.7880 | TEST acc=0.8036 | macroP/R/F1=0.7722/0.8368/0.7826 | top3=0.9339 | top5=0.9641
+
+GRID_METRIC val_macro_f1 0.788032
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.801428
+GRID_METRIC val_top3 0.934526
+GRID_METRIC val_top5 0.964261
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.6278 ± 0.0000
+Test Acc        : 0.8036 ± 0.0000
+Macro Precision : 0.7722 ± 0.0000
+Macro Recall    : 0.8368 ± 0.0000
+Macro F1        : 0.7826 ± 0.0000
+Top-3 Acc       : 0.9339 ± 0.0000
+Top-5 Acc       : 0.9641 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 19811 (80.3626%)
+Errors (off-diagonal) count: 4841 (19.6374%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. cholecystitis  →  gallstone   (count=40)
+ 2. depression  →  post-traumatic stress disorder (ptsd)   (count=30)
+ 3. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=29)
+ 4. schizophrenia  →  psychotic disorder   (count=28)
+ 5. degenerative disc disease  →  spinal stenosis   (count=25)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+vitreous hemorrhage | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+hemophilia | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+cardiomyopathy | 31 | 0.9032 | 0.7568 | 0.9032 | 0.8235
+seborrheic dermatitis | 88 | 0.7500 | 0.9167 | 0.7500 | 0.8250
+abscess of nose | 29 | 0.8966 | 0.7647 | 0.8966 | 0.8254
+heart failure | 91 | 0.7033 | 1.0000 | 0.7033 | 0.8258
+vitamin b12 deficiency | 8 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+viral hepatitis | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+testicular cancer | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+anal fistula | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p001_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p001_bs32_h256_128_64.jpg
+Total runtime: 846.2s

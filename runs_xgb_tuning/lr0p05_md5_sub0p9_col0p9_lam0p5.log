@@ -1,0 +1,37 @@
+Classes: 677 | Train/Val/Test: 197209/24651/24652
+Seeds: [1]
+======================================================================
+Traceback (most recent call last):
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 432, in <module>
+    main()
+    ~~~~^^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 295, in main
+    val_m, test_m = train_one_seed(
+                    ~~~~~~~~~~~~~~^
+        seed=s,
+        ^^^^^^^
+    ...<5 lines>...
+        early_stopping_rounds=args.early_stopping_rounds
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\_ryanDev\ML_Projects\ML_Project_Github_Upload\xgboost_weighted.py", line 177, in train_one_seed
+    bst = xgb.train(
+        xgb_params,
+    ...<4 lines>...
+        verbose_eval=False,
+    )
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 774, in inner_f
+    return func(**kwargs)
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\training.py", line 199, in train
+    bst.update(dtrain, iteration=i, fobj=obj)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\zhuha\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2434, in update
+    _LIB.XGBoosterUpdateOneIter(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.handle, ctypes.c_int(iteration), dtrain.handle
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+KeyboardInterrupt
+^C

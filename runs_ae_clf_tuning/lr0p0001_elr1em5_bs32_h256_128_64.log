@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 1e-05  |  Classifier head LR: 0.0001
+[seed 1] VAL macroF1=0.8450 | TEST acc=0.8534 | macroP/R/F1=0.8273/0.8834/0.8402 | top3=0.9568 | top5=0.9782
+
+GRID_METRIC val_macro_f1 0.845015
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.855300
+GRID_METRIC val_top3 0.954647
+GRID_METRIC val_top5 0.977445
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.3846 ± 0.0000
+Test Acc        : 0.8534 ± 0.0000
+Macro Precision : 0.8273 ± 0.0000
+Macro Recall    : 0.8834 ± 0.0000
+Macro F1        : 0.8402 ± 0.0000
+Top-3 Acc       : 0.9568 ± 0.0000
+Top-5 Acc       : 0.9782 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21037 (85.3359%)
+Errors (off-diagonal) count: 3615 (14.6641%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=50)
+ 2. psychotic disorder  →  schizophrenia   (count=32)
+ 3. cholecystitis  →  gallstone   (count=32)
+ 4. personality disorder  →  schizophrenia   (count=24)
+ 5. vaginal cyst  →  spontaneous abortion   (count=23)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+vitreous hemorrhage | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+neurosis | 90 | 0.8111 | 0.9865 | 0.8111 | 0.8902
+chronic otitis media | 67 | 0.8507 | 0.9344 | 0.8507 | 0.8906
+white blood cell disease | 51 | 0.9608 | 0.8305 | 0.9608 | 0.8909
+brachial neuritis | 91 | 0.9011 | 0.8817 | 0.9011 | 0.8913
+abdominal aortic aneurysm | 14 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amyotrophic lateral sclerosis (als) | 6 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em5_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em5_bs32_h256_128_64.jpg
+Total runtime: 2305.5s

@@ -1,0 +1,59 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.001  |  Classifier head LR: 0.0001
+[seed 1] Early stopping (no improvement for 10 epochs)
+[seed 1] VAL macroF1=0.8401 | TEST acc=0.8467 | macroP/R/F1=0.8224/0.8763/0.8342 | top3=0.9518 | top5=0.9731
+
+GRID_METRIC val_macro_f1 0.840081
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.850270
+GRID_METRIC val_top3 0.950266
+GRID_METRIC val_top5 0.972253
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.4326 ± 0.0000
+Test Acc        : 0.8467 ± 0.0000
+Macro Precision : 0.8224 ± 0.0000
+Macro Recall    : 0.8763 ± 0.0000
+Macro F1        : 0.8342 ± 0.0000
+Top-3 Acc       : 0.9518 ± 0.0000
+Top-5 Acc       : 0.9731 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 20872 (84.6666%)
+Errors (off-diagonal) count: 3780 (15.3334%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=46)
+ 2. cholecystitis  →  gallstone   (count=28)
+ 3. degenerative disc disease  →  spinal stenosis   (count=25)
+ 4. schizophrenia  →  psychotic disorder   (count=25)
+ 5. acute bronchitis  →  chronic obstructive pulmonary disease (copd)   (count=20)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pseudohypoparathyroidism | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+birth trauma | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+central atherosclerosis | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pinworm infection | 8 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+somatization disorder | 8 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+stricture of the esophagus | 8 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+neuropathy due to drugs | 4 | 1.0000 | 0.8000 | 1.0000 | 0.8889
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amblyopia | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs32_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em3_bs32_h256_128_64.jpg
+Total runtime: 1325.0s

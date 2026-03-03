@@ -1,0 +1,77 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+[seed 1] Epoch 01/100 | Val Macro F1: 0.7730
+[seed 1] Epoch 02/100 | Val Macro F1: 0.8209
+[seed 1] Epoch 03/100 | Val Macro F1: 0.8346
+[seed 1] Epoch 04/100 | Val Macro F1: 0.8429
+[seed 1] Epoch 05/100 | Val Macro F1: 0.8498
+[seed 1] Epoch 06/100 | Val Macro F1: 0.8539
+[seed 1] Epoch 07/100 | Val Macro F1: 0.8530
+[seed 1] Epoch 08/100 | Val Macro F1: 0.8538
+[seed 1] Epoch 09/100 | Val Macro F1: 0.8541
+[seed 1] Epoch 10/100 | Val Macro F1: 0.8533
+[seed 1] Epoch 11/100 | Val Macro F1: 0.8526
+[seed 1] Epoch 12/100 | Val Macro F1: 0.8517
+[seed 1] Epoch 13/100 | Val Macro F1: 0.8500
+[seed 1] Epoch 14/100 | Val Macro F1: 0.8497
+[seed 1] Epoch 15/100 | Val Macro F1: 0.8489
+[seed 1] Epoch 16/100 | Val Macro F1: 0.8484
+[seed 1] Epoch 17/100 | Val Macro F1: 0.8493
+[seed 1] Epoch 18/100 | Val Macro F1: 0.8480
+[seed 1] Epoch 19/100 | Val Macro F1: 0.8501
+[seed 1] Epoch 20/100 | Val Macro F1: 0.8486
+[seed 1] Epoch 21/100 | Val Macro F1: 0.8481
+[seed 1] Epoch 22/100 | Val Macro F1: 0.8477
+[seed 1] Epoch 23/100 | Val Macro F1: 0.8490
+[seed 1] Epoch 24/100 | Val Macro F1: 0.8486
+[seed 1] Early stopping (no improvement for 15 epochs)
+[seed 1] loss=0.4041 | acc=0.8652 | macroP/R/F1=0.8212/0.9120/0.8465 | top3=0.9611 | top5=0.9810 | best_val_f1=0.8541
+
+=== TEST METRICS over seeds (mean +/- std) ===
+Test Loss       : 0.4041 +/- 0.0000
+Test Acc        : 0.8652 +/- 0.0000
+Macro Precision : 0.8212 +/- 0.0000
+Macro Recall    : 0.9120 +/- 0.0000
+Macro F1        : 0.8465 +/- 0.0000
+Top-3 Acc       : 0.9611 +/- 0.0000
+Top-5 Acc       : 0.9810 +/- 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21330 (86.5244%)
+Errors (off-diagonal) count: 3322 (13.4756%)
+
+=== Top-5 most commonly confused (True -> Pred) across all seeds ===
+ 1. noninfectious gastroenteritis  ->  infectious gastroenteritis   (count=54)
+ 2. cholecystitis  ->  gallstone   (count=29)
+ 3. schizophrenia  ->  psychotic disorder   (count=25)
+ 4. temporary or benign blood in urine  ->  bladder disorder   (count=21)
+ 5. skin polyp  ->  skin disorder   (count=21)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+vitreous hemorrhage | 2 | 0.5000 | 0.1111 | 0.5000 | 0.1818
+heart block | 61 | 0.8689 | 0.9298 | 0.8689 | 0.8983
+abscess of the pharynx | 34 | 0.9118 | 0.8857 | 0.9118 | 0.8986
+conjunctivitis | 91 | 0.8791 | 0.9195 | 0.8791 | 0.8989
+transient ischemic attack | 66 | 0.8788 | 0.9206 | 0.8788 | 0.8992
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+toxoplasmosis | 1 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+tourette syndrome | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+best_val_macro_f1_mean=0.854146
+best_val_macro_f1_std=0.000000
+test_macro_f1_mean=0.846492
+test_macro_f1_std=0.000000
+
+Done.
+Saved heatmap: runs_lr_tuning\LR_lr0.001_bs64_wd1e-6_pat15.png and runs_lr_tuning\LR_lr0.001_bs64_wd1e-6_pat15.jpg
+Total runtime: 1684.8s

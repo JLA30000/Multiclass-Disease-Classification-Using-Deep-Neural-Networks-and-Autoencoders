@@ -1,0 +1,58 @@
+Device: cpu
+Seeds: [1]
+======================================================================
+Input dim (raw): 377
+Classes: 677
+Random baseline acc: 0.1477%
+======================================================================
+Loading pretrained autoencoder for end-to-end fine-tuning...
+Autoencoder checkpoint: runs_autoencoder/autoencoder_seed0_lr0.0001_bs64_z128_bestVAL0.000248_test0.000235.pth
+Autoencoder loaded (latent_dim=128)
+Encoder LR: 0.0001  |  Classifier head LR: 0.0001
+[seed 1] VAL macroF1=0.8461 | TEST acc=0.8551 | macroP/R/F1=0.8318/0.8877/0.8450 | top3=0.9544 | top5=0.9769
+
+GRID_METRIC val_macro_f1 0.846051
+GRID_METRIC val_macro_f1_std 0.000000
+GRID_METRIC val_acc 0.855990
+GRID_METRIC val_top3 0.954931
+GRID_METRIC val_top5 0.977891
+
+=== TEST METRICS over seeds (mean ± std) ===
+Test Loss       : 0.3827 ± 0.0000
+Test Acc        : 0.8551 ± 0.0000
+Macro Precision : 0.8318 ± 0.0000
+Macro Recall    : 0.8877 ± 0.0000
+Macro F1        : 0.8450 ± 0.0000
+Top-3 Acc       : 0.9544 ± 0.0000
+Top-5 Acc       : 0.9769 ± 0.0000
+
+=== Aggregated confusion statistics (summed over seeds) ===
+Total test examples (summed across seeds): 24652
+Correct (diagonal) count: 21081 (85.5144%)
+Errors (off-diagonal) count: 3571 (14.4856%)
+
+=== Top-5 most commonly confused (True → Pred) across all seeds ===
+ 1. infectious gastroenteritis  →  noninfectious gastroenteritis   (count=32)
+ 2. cholecystitis  →  gallstone   (count=32)
+ 3. noninfectious gastroenteritis  →  infectious gastroenteritis   (count=26)
+ 4. schizophrenia  →  psychotic disorder   (count=26)
+ 5. depression  →  post-traumatic stress disorder (ptsd)   (count=24)
+
+=== Representative per-class performance (aggregated over seeds) ===
+Disease | Support | Accuracy | Precision | Recall | F1
+pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+ovarian cancer | 2 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+raynaud disease | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+pleural effusion | 61 | 0.8689 | 0.9138 | 0.8689 | 0.8908
+fracture of the arm | 44 | 0.9318 | 0.8542 | 0.9318 | 0.8913
+envenomation from spider or animal bite | 46 | 0.8043 | 1.0000 | 0.8043 | 0.8916
+rectal disorder | 90 | 0.9222 | 0.8646 | 0.9222 | 0.8925
+adrenal adenoma | 3 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+amblyopia | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+
+Done.
+Saved heatmap: runs_ae_clf_tuning\AEclf_lr0p0001_elr1em4_bs64_h256_128_64.png and runs_ae_clf_tuning\AEclf_lr0p0001_elr1em4_bs64_h256_128_64.jpg
+Total runtime: 1443.1s
