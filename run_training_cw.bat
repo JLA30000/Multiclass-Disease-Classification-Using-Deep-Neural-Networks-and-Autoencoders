@@ -1,15 +1,12 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-REM ============================================================
-REM  Class-Weighted CE Classifier — Grid Search (full unbalanced)
-REM ============================================================
 
 set "PY=python"
 set "SCRIPT=class_weighted_classifier.py"
 
 set "DATA_PATH=diseases.csv"
-set "INDICES_FILE=split_indices_full_80_10_10.npz"
+set "IF=split_indices_full_80_10_10.npz"
 
 set "SEEDS=1"
 set "EPOCHS=50"
@@ -17,33 +14,29 @@ set "PATIENCE=10"
 set "MIN_DELTA=1e-4"
 set "MIN_EPOCHS=10"
 
-REM ---- Output directory ----
 set "OUTDIR=runs_cw_tuning"
 if not exist "%OUTDIR%" mkdir "%OUTDIR%"
 
 set "SUMMARY=%OUTDIR%\summary.csv"
 > "%SUMMARY%" echo run_id,learning_rate,batch_size,arch,hidden_dims,val_macro_f1,val_acc,val_top3,val_top5,log_file
 
-set "BEST_METRIC=-1"
-set "BEST_RUN_ID="
+set "BM=-1"
+set "BRI="
 set "BEST_LR="
 set "BEST_BS="
 set "BEST_ARCH="
 set "BEST_HDIMS="
 set "BEST_LOG="
 
-REM ---- Hyperparameter Grid ----
 set "LRS=0.001 0.0003 0.0001"
 set "BATCHES=32 64"
 
-REM Architecture configs (iterated by ID)
 set "ARCH_COUNT=2"
 set "ARCH1_NAME=256_128_64"
 set "ARCH1_DIMS=256 128 64"
 set "ARCH2_NAME=512_256_128_64"
 set "ARCH2_DIMS=512 256 128 64"
 
-REM ---- Grid Search ----
 set RUN_NUM=0
 
 for %%L in (%LRS%) do (
@@ -72,7 +65,7 @@ for %%L in (%LRS%) do (
 
       "%PY%" "%SCRIPT%" ^
         --data_path "%DATA_PATH%" ^
-        --indices_file "%INDICES_FILE%" ^
+        --indices_file "%IF%" ^
         --lr !LR! ^
         --batch_size !BS! ^
         --epochs %EPOCHS% ^
@@ -83,7 +76,6 @@ for %%L in (%LRS%) do (
         --hidden_dims !HDIMS! ^
         --out_prefix "!OUT_PREFIX!" > "!LOG_FILE!" 2>&1
 
-      REM ---- Extract metrics from log ----
       set "F1="
       set "ACC="
       set "TOP3="
@@ -101,12 +93,11 @@ for %%L in (%LRS%) do (
 
       >> "%SUMMARY%" echo !RUN_ID!,!LR!,!BS!,!ARCH_NAME!,!HDIMS!,!F1!,!ACC!,!TOP3!,!TOP5!,!LOG_FILE!
 
-      REM ---- Track best (by macro F1) ----
       if defined F1 (
-        for /f %%b in ('python -c "import sys;print(int(float(sys.argv[1])>float(sys.argv[2])))" !F1! !BEST_METRIC!') do (
+        for /f %%b in ('python -c "import sys;print(int(float(sys.argv[1])>float(sys.argv[2])))" !F1! !BM!') do (
           if "%%b"=="1" (
-            set "BEST_METRIC=!F1!"
-            set "BEST_RUN_ID=!RUN_ID!"
+            set "BM=!F1!"
+            set "BRI=!RUN_ID!"
             set "BEST_LR=!LR!"
             set "BEST_BS=!BS!"
             set "BEST_ARCH=!ARCH_NAME!"
@@ -120,12 +111,9 @@ for %%L in (%LRS%) do (
   )
 )
 
-REM ============================================================
-REM  Print Winner
-REM ============================================================
 echo.
 echo.
-if "!BEST_RUN_ID!"=="" (
+if "!BRI!"=="" (
   echo No metric was parsed from any log.
   echo Check logs in %OUTDIR% for errors.
   echo See: "%SUMMARY%"
@@ -135,8 +123,8 @@ if "!BEST_RUN_ID!"=="" (
 echo ============================================================
 echo  BEST HYPERPARAMETERS FOUND
 echo ============================================================
-echo  val_macro_f1:   !BEST_METRIC!
-echo  run_id:         !BEST_RUN_ID!
+echo  val_macro_f1:   !BM!
+echo  run_id:         !BRI!
 echo  learning_rate:  !BEST_LR!
 echo  batch_size:     !BEST_BS!
 echo  architecture:   !BEST_ARCH!

@@ -1,0 +1,16 @@
+Latent Space Quality — Summary
+==================================================
+
+1. PCA Comparison
+   Silhouette score (2-D PCA) — raw: -0.5849  latent: -0.5561
+   Variance explained (2 PCs) — raw: 0.0819  latent: 0.5179
+   Variance explained (10 PCs) — raw: 0.2727  latent: 0.9326
+
+2. t-SNE / UMAP
+   See saved figure for visual comparison.
+
+3. Reconstruction Error vs. Classification F1
+   Spearman rho = 0.2919  (p = 6.32e-12)
+   Negative rho → classes the AE reconstructs well tend to classify better.
+
+==================================================

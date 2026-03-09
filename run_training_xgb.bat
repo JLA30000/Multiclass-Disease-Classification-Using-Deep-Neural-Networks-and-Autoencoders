@@ -1,14 +1,11 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 
-REM ----------------------------
-REM Settings
-REM ----------------------------
 set "PY=python"
 set "SCRIPT=xgboost_weighted.py"
 
 set "DATA_PATH=diseases.csv"
-set "INDICES_FILE=split_indices_full_80_10_10.npz"
+set "IF=split_indices_full_80_10_10.npz"
 
 set "SEEDS=0,1,2,3,4,5,6,7,8,9"
 set "EARLY=50"
@@ -22,10 +19,10 @@ if not exist "%OUTDIR%" mkdir "%OUTDIR%"
 set "SUMMARY=%OUTDIR%\summary.csv"
 > "%SUMMARY%" echo run_id,learning_rate,max_depth,subsample,colsample_bytree,reg_lambda,val_macro_f1,log_file
 
-set "METRIC_PATTERN=GRID_METRIC val_macro_f1"
+set "MP=GRID_METRIC val_macro_f1"
 
-set "BEST_METRIC=-1"
-set "BEST_RUN_ID="
+set "BM=-1"
+set "BRI="
 set "BEST_LR="
 set "BEST_MD="
 set "BEST_SUB="
@@ -33,9 +30,6 @@ set "BEST_COL="
 set "BEST_LAM="
 set "BEST_LOG="
 
-REM ----------------------------
-REM Grid Search
-REM ----------------------------
 for %%R in (0.1) do (
   for %%D in (5) do (
     for %%S in (0.75) do (
@@ -62,7 +56,7 @@ for %%R in (0.1) do (
           if "!NO_PLOTS!"=="1" (
             "%PY%" "%SCRIPT%" ^
               --data_path "%DATA_PATH%" ^
-              --indices_file "%INDICES_FILE%" ^
+              --indices_file "%IF%" ^
               --seeds "%SEEDS%" ^
               --early_stopping_rounds "%EARLY%" ^
               --n_estimators 4000 ^
@@ -82,7 +76,7 @@ for %%R in (0.1) do (
           ) else (
             "%PY%" "%SCRIPT%" ^
               --data_path "%DATA_PATH%" ^
-              --indices_file "%INDICES_FILE%" ^
+              --indices_file "%IF%" ^
               --seeds "%SEEDS%" ^
               --early_stopping_rounds "%EARLY%" ^
               --n_estimators 4000 ^
@@ -100,17 +94,16 @@ for %%R in (0.1) do (
               --out_prefix "!OUT_PREFIX!" > "!LOG_FILE!" 2>&1
           )
 
-          REM Extract metric: match ONLY the mean line, not *_std
           set "METRIC="
-          for /f "tokens=3" %%m in ('findstr /C:"!METRIC_PATTERN! " "!LOG_FILE!"') do set "METRIC=%%m"
+          for /f "tokens=3" %%m in ('findstr /C:"!MP! " "!LOG_FILE!"') do set "METRIC=%%m"
 
           >> "%SUMMARY%" echo !RUN_ID!,!LR!,!MD!,!SUB!,!COL!,!LAM!,!METRIC!,!LOG_FILE!
 
           if defined METRIC (
-            for /f %%b in ('python -c "import sys;print(int(float(sys.argv[1]).__gt__(float(sys.argv[2]))))" !METRIC! !BEST_METRIC!') do (
+            for /f %%b in ('python -c "import sys;print(int(float(sys.argv[1]).__gt__(float(sys.argv[2]))))" !METRIC! !BM!') do (
               if "%%b"=="1" (
-                set "BEST_METRIC=!METRIC!"
-                set "BEST_RUN_ID=!RUN_ID!"
+                set "BM=!METRIC!"
+                set "BRI=!RUN_ID!"
                 set "BEST_LR=!LR!"
                 set "BEST_MD=!MD!"
                 set "BEST_SUB=!SUB!"
@@ -129,11 +122,8 @@ for %%R in (0.1) do (
   )
 )
 
-REM ----------------------------
-REM Print winner
-REM ----------------------------
 echo.
-if "!BEST_RUN_ID!"=="" (
+if "!BRI!"=="" (
   echo No metric was parsed from logs.
   echo Fix METRIC_PATTERN to match what your script prints.
   echo See: "%SUMMARY%"
@@ -143,8 +133,8 @@ if "!BEST_RUN_ID!"=="" (
 echo ============================
 echo BEST HYPERPARAMETERS FOUND
 echo ============================
-echo val_macro_f1:     !BEST_METRIC!
-echo run_id:           !BEST_RUN_ID!
+echo val_macro_f1:     !BM!
+echo run_id:           !BRI!
 echo learning_rate:    !BEST_LR!
 echo max_depth:        !BEST_MD!
 echo subsample:        !BEST_SUB!

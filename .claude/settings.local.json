@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git config:*)",
+      "Bash(ls -lh C:_ryanDev/ML_Projects/ML_Project_Github_Upload/export_*/*.bundle.pt)",
+      "Bash(sort -k2)",
+      "Bash(ls:*)"
     ]
   }
 }

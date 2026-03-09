@@ -1,87 +1,78 @@
 Device: cpu
-Seeds: [1]
+Seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ======================================================================
 Input dim (raw): 377
 Classes: 677
 Random baseline acc: 0.1477%
 ======================================================================
-[seed 1] Epoch 01/100 | Val Macro F1: 0.8327
-[seed 1] Epoch 02/100 | Val Macro F1: 0.8469
-[seed 1] Epoch 03/100 | Val Macro F1: 0.8554
-[seed 1] Epoch 04/100 | Val Macro F1: 0.8523
-[seed 1] Epoch 05/100 | Val Macro F1: 0.8543
-[seed 1] Epoch 06/100 | Val Macro F1: 0.8522
-[seed 1] Epoch 07/100 | Val Macro F1: 0.8533
-[seed 1] Epoch 08/100 | Val Macro F1: 0.8536
-[seed 1] Epoch 09/100 | Val Macro F1: 0.8534
-[seed 1] Epoch 10/100 | Val Macro F1: 0.8572
-[seed 1] Epoch 11/100 | Val Macro F1: 0.8541
-[seed 1] Epoch 12/100 | Val Macro F1: 0.8536
-[seed 1] Epoch 13/100 | Val Macro F1: 0.8554
-[seed 1] Epoch 14/100 | Val Macro F1: 0.8548
-[seed 1] Epoch 15/100 | Val Macro F1: 0.8535
-[seed 1] Epoch 16/100 | Val Macro F1: 0.8546
-[seed 1] Epoch 17/100 | Val Macro F1: 0.8570
-[seed 1] Epoch 18/100 | Val Macro F1: 0.8547
-[seed 1] Epoch 19/100 | Val Macro F1: 0.8583
-[seed 1] Epoch 20/100 | Val Macro F1: 0.8550
-[seed 1] Epoch 21/100 | Val Macro F1: 0.8562
-[seed 1] Epoch 22/100 | Val Macro F1: 0.8558
-[seed 1] Epoch 23/100 | Val Macro F1: 0.8555
-[seed 1] Epoch 24/100 | Val Macro F1: 0.8554
-[seed 1] Epoch 25/100 | Val Macro F1: 0.8574
-[seed 1] Epoch 26/100 | Val Macro F1: 0.8535
-[seed 1] Epoch 27/100 | Val Macro F1: 0.8574
-[seed 1] Epoch 28/100 | Val Macro F1: 0.8559
-[seed 1] Epoch 29/100 | Val Macro F1: 0.8565
-[seed 1] Epoch 30/100 | Val Macro F1: 0.8568
-[seed 1] Epoch 31/100 | Val Macro F1: 0.8556
-[seed 1] Epoch 32/100 | Val Macro F1: 0.8577
-[seed 1] Epoch 33/100 | Val Macro F1: 0.8578
-[seed 1] Epoch 34/100 | Val Macro F1: 0.8551
+[seed 0] Early stopping (no improvement for 15 epochs)
+[seed 0] VAL macroF1=0.8597 | TEST acc=0.8643 | macroP/R/F1=0.8357/0.9043/0.8530 | top3=0.9617 | top5=0.9818
 [seed 1] Early stopping (no improvement for 15 epochs)
-[seed 1] loss=0.3105 | acc=0.8642 | macroP/R/F1=0.8332/0.9066/0.8537 | top3=0.9617 | top5=0.9809 | best_val_f1=0.8583
+[seed 1] VAL macroF1=0.8583 | TEST acc=0.8642 | macroP/R/F1=0.8332/0.9066/0.8537 | top3=0.9617 | top5=0.9809
+[seed 2] Early stopping (no improvement for 15 epochs)
+[seed 2] VAL macroF1=0.8597 | TEST acc=0.8636 | macroP/R/F1=0.8376/0.9049/0.8552 | top3=0.9610 | top5=0.9811
+[seed 3] Early stopping (no improvement for 15 epochs)
+[seed 3] VAL macroF1=0.8599 | TEST acc=0.8652 | macroP/R/F1=0.8346/0.9049/0.8529 | top3=0.9619 | top5=0.9815
+[seed 4] Early stopping (no improvement for 15 epochs)
+[seed 4] VAL macroF1=0.8595 | TEST acc=0.8639 | macroP/R/F1=0.8366/0.9053/0.8547 | top3=0.9624 | top5=0.9817
+[seed 5] Early stopping (no improvement for 15 epochs)
+[seed 5] VAL macroF1=0.8581 | TEST acc=0.8644 | macroP/R/F1=0.8370/0.9049/0.8545 | top3=0.9614 | top5=0.9815
+[seed 6] Early stopping (no improvement for 15 epochs)
+[seed 6] VAL macroF1=0.8576 | TEST acc=0.8635 | macroP/R/F1=0.8317/0.9057/0.8511 | top3=0.9602 | top5=0.9809
+[seed 7] Early stopping (no improvement for 15 epochs)
+[seed 7] VAL macroF1=0.8586 | TEST acc=0.8636 | macroP/R/F1=0.8327/0.9053/0.8520 | top3=0.9607 | top5=0.9800
+[seed 8] Early stopping (no improvement for 15 epochs)
+[seed 8] VAL macroF1=0.8585 | TEST acc=0.8633 | macroP/R/F1=0.8347/0.9029/0.8522 | top3=0.9618 | top5=0.9816
+[seed 9] Early stopping (no improvement for 15 epochs)
+[seed 9] VAL macroF1=0.8579 | TEST acc=0.8637 | macroP/R/F1=0.8292/0.9038/0.8500 | top3=0.9611 | top5=0.9802
+
+GRID_METRIC val_macro_f1 0.858789
+GRID_METRIC val_macro_f1_std 0.000832
+GRID_METRIC val_acc 0.867089
+GRID_METRIC val_top3 0.961215
+GRID_METRIC val_top5 0.980565
 
 === TEST METRICS over seeds (mean +/- std) ===
-Test Loss       : 0.3105 +/- 0.0000
-Test Acc        : 0.8642 +/- 0.0000
-Macro Precision : 0.8332 +/- 0.0000
-Macro Recall    : 0.9066 +/- 0.0000
-Macro F1        : 0.8537 +/- 0.0000
-Top-3 Acc       : 0.9617 +/- 0.0000
-Top-5 Acc       : 0.9809 +/- 0.0000
+Test Loss       : 0.3220 +/- 0.0312
+Test Acc        : 0.8640 +/- 0.0006
+Macro Precision : 0.8343 +/- 0.0026
+Macro Recall    : 0.9049 +/- 0.0010
+Macro F1        : 0.8529 +/- 0.0017
+Top-3 Acc       : 0.9614 +/- 0.0007
+Top-5 Acc       : 0.9811 +/- 0.0006
 
 === Aggregated confusion statistics (summed over seeds) ===
-Total test examples (summed across seeds): 24652
-Correct (diagonal) count: 21305 (86.4230%)
-Errors (off-diagonal) count: 3347 (13.5770%)
+Total test examples (summed across seeds): 246520
+Correct (diagonal) count: 212986 (86.3970%)
+Errors (off-diagonal) count: 33534 (13.6030%)
 
 === Top-5 most commonly confused (True -> Pred) across all seeds ===
- 1. schizophrenia  ->  psychotic disorder   (count=30)
- 2. infectious gastroenteritis  ->  noninfectious gastroenteritis   (count=30)
- 3. cholecystitis  ->  gallstone   (count=28)
- 4. noninfectious gastroenteritis  ->  infectious gastroenteritis   (count=26)
- 5. depression  ->  post-traumatic stress disorder (ptsd)   (count=21)
+ 1. infectious gastroenteritis  ->  noninfectious gastroenteritis   (count=285)
+ 2. noninfectious gastroenteritis  ->  infectious gastroenteritis   (count=277)
+ 3. cholecystitis  ->  gallstone   (count=264)
+ 4. depression  ->  post-traumatic stress disorder (ptsd)   (count=215)
+ 5. temporary or benign blood in urine  ->  bladder disorder   (count=205)
 
 === Representative per-class performance (aggregated over seeds) ===
 Disease | Support | Accuracy | Precision | Recall | F1
-pregnancy | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
-open wound of the nose | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
-rhabdomyolysis | 1 | 0.0000 | 0.0000 | 0.0000 | 0.0000
-floaters | 2 | 0.5000 | 0.0769 | 0.5000 | 0.1333
-autism | 45 | 0.9111 | 0.8913 | 0.9111 | 0.9011
-ankylosing spondylitis | 61 | 0.9016 | 0.9016 | 0.9016 | 0.9016
-pericarditis | 14 | 1.0000 | 0.8235 | 1.0000 | 0.9032
-rectal disorder | 90 | 0.9333 | 0.8750 | 0.9333 | 0.9032
-alcoholic liver disease | 24 | 1.0000 | 1.0000 | 1.0000 | 1.0000
-allergy to animals | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
-amblyopia | 4 | 1.0000 | 1.0000 | 1.0000 | 1.0000
-uveitis | 2 | 1.0000 | 1.0000 | 1.0000 | 1.0000
-best_val_macro_f1_mean=0.858295
-best_val_macro_f1_std=0.000000
-test_macro_f1_mean=0.853678
-test_macro_f1_std=0.000000
+rhabdomyolysis | 10 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+open wound of the nose | 10 | 0.0000 | 0.0000 | 0.0000 | 0.0000
+vitreous hemorrhage | 20 | 0.5000 | 0.0901 | 0.5000 | 0.1527
+floaters | 20 | 0.9000 | 0.1154 | 0.9000 | 0.2045
+peritonitis | 380 | 0.8711 | 0.9298 | 0.8711 | 0.8995
+injury of the ankle | 180 | 1.0000 | 0.8182 | 1.0000 | 0.9000
+avascular necrosis | 10 | 0.9000 | 0.9000 | 0.9000 | 0.9000
+burn | 50 | 1.0000 | 0.8197 | 1.0000 | 0.9009
+alcoholic liver disease | 240 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+trichinosis | 10 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+testicular cancer | 10 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+tuberculosis | 20 | 1.0000 | 1.0000 | 1.0000 | 1.0000
+best_val_macro_f1_mean=0.858789
+best_val_macro_f1_std=0.000832
+test_macro_f1_mean=0.852937
+test_macro_f1_std=0.001660
 
 Done.
-Saved heatmap: runs_lr_tuning\LR_lr0.005_bs32_wd1e-6_pat15.png and runs_lr_tuning\LR_lr0.005_bs32_wd1e-6_pat15.jpg
-Total runtime: 1256.3s
+Saved: runs_lr_tuning\LR_lr0.005_bs32_wd1e-6_pat15.png (642362 bytes)
+Saved: runs_lr_tuning\LR_lr0.005_bs32_wd1e-6_pat15.jpg (684445 bytes)
+Total runtime: 12981.9s
