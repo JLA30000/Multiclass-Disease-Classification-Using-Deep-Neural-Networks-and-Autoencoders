@@ -1,7 +1,4 @@
 from __future__ import annotations
-import matplotlib
-
-matplotlib.use('Agg')
 import os
 import random
 import numpy as np
@@ -90,6 +87,8 @@ def normalize_cm(cm: np.ndarray, mode: str):
 
 
 def plot_block_heatmap(block_cm: np.ndarray, group_size: int, n_classes: int, normalize: str, out_prefix: str, *, tms: dict | None=None, confusion_stats: dict | None=None, top_confusions: list | None=None, rep_diseases: list | None=None):
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib.gridspec import GridSpec
     show = normalize_cm(block_cm, normalize)
