@@ -54,12 +54,12 @@ class HealthResponse(BaseModel):
 
 
 class SchemaResponse(BaseModel):
-    pmfc: Dict[str, List[str]]
+    per_model_feature_cols: Dict[str, List[str]]
 
 
 class SymptomsResponse(BaseModel):
     symptoms: List[str]
-    pms: Dict[str, List[str]]
+    per_model_symptoms: Dict[str, List[str]]
     note: str
 
 
